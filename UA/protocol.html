@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- Created on 22 лип 2013 17:07:15 -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>
+         Мережевий протокол
+      </title>
+      <link REL="stylesheet" type="text/css" href="../spec.css">
+      <meta name="GENERATOR" content="Arachnophilia 5.5"/>
+      <meta name="FORMATTER" content="Arachnophilia 5.5"/>
+   </head>
+
+<body>
+<div align="center" class="m-header">Мережевий протокол</div>
+<br/>
+<a href="_contents.html"><<<Назад</a>
+<br/>
+<br/>
+<span class="header">Структура протоколу</span><br/>
+<br/>
+<div class="main">
+
+Мережевий протокол системи "Стрічка" складається з простих команд, які супроводжуються аргументами. 
+Кожна команда починається за назви команди і двокрапкою відділяється від аргументів. Аргументи команди 
+зазвичай відокремлюються комами між собою. Приклад:<br/>
+
+<pre class="code-frame">
+КОМАНДА<span class="red-text">:</span><span class="green-text">АРГУМЕНТ_1</span><span class="red-text">,</span><span class="green-text">АРГУМЕНТ_2</span>
+</pre>
+
+<span class="strong">Важливе зауваження: <span class="select">команда повинна займати лише один рядок</span>.</span><br/>
+<br/>
+
+
+Мережевий протокол поділяється на декілька рівнів:
+<br/>
+<br/>
+
+<table cellspacing="0" cellpadding="4" border="2" width="100%">
+  <tr>
+    <!-- Row 1 Column 1 -->
+    <td align="center">
+      <span class="strong">Опис</span>
+    </td>
+    <!-- Row 1 Column 2 -->
+    <td align="center">
+     	<span class="strong">Форма команди</span>
+    </td>
+    <!-- Row 1 Column 3 -->
+    <td align="center">
+      <span class="strong">Ідентифікатор рівня протоколу</span>
+    </td>
+    <!-- Row 1 Column 4 -->
+    <td align="center">
+      <span class="strong">Форма номеру команди</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 2 Column 1 -->
+    <td align="center">
+      Команди керування з'єднанням
+    </td>
+    <!-- Row 2 Column 2 -->
+    <td align="center">
+      <span class="select">RIBBON_NCTL_*</span>
+    </td>
+    <!-- Row 2 Column 3 -->
+    <td align="center">
+      <span class="red-text">[LEVEL_0]</span>
+    </td>
+    <!-- Row 2 Column 4 -->
+    <td align="center">
+      <span class="green-text">[0x]</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 3 Column 1 -->
+    <td align="center">
+      Базові команди
+    </td>
+    <!-- Row 3 Column 2 -->
+    <td align="center">
+      <span class="select">RIBBON_*</span>
+    </td>
+    <!-- Row 3 Column 3 -->
+    <td align="center">
+     	<span class="red-text">[LEVEL_1]</span>
+    </td>
+    <!-- Row 3 Column 4 -->
+    <td align="center">
+      <span class="green-text">[1x]</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 4 Column 1 -->
+    <td align="center">
+      Команди керування сервером
+    </td>
+    <!-- Row 4 Column 2 -->
+    <td align="center">
+      <span class="select">RIBBON_ADM_*</span>
+    </td>
+    <!-- Row 4 Column 3 -->
+    <td align="center">
+      <span class="red-text">[LEVEL_2]</span>
+    </td>
+    <!-- Row 4 Column 4 -->
+    <td align="center">
+      <span class="green-text">[2x]</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 5 Column 1 -->
+    <td align="center">
+      Команди керування клієнтом
+    </td>
+    <!-- Row 5 Column 2 -->
+    <td align="center">
+      <span class="select">RIBBON_UCTL_*</span>
+    </td>
+    <!-- Row 5 Column 3 -->
+    <td align="center">
+      <span class="red-text">[LEVEL_3]</span>
+    </td>
+    <!-- Row 5 Column 4 -->
+    <td align="center">
+      <span class="green-text">[3x]</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 6 Column 1 -->
+    <td align="center">
+     	Команди керування консоллю адміністратора
+    </td>
+    <!-- Row 6 Column 2 -->
+    <td align="center">
+      <span class="select">RIBBON_CCTL_*</span>
+    </td>
+    <!-- Row 6 Column 3 -->
+    <td align="center">
+      <span class="red-text">[LEVEL_4]</span>
+    </td>
+    <!-- Row 6 Column 4 -->
+    <td align="center">
+      <span class="green-text">[4x]</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 7 Column 1 -->
+    <td align="center">
+      Статуси та спеціальні команди
+    </td>
+    <!-- Row 7 Column 2 -->
+    <td align="center">
+      <span class="select">--</span>
+    </td>
+    <!-- Row 7 Column 3 -->
+    <td align="center">
+      <span class="red-text">[SPECIAL]</span>
+    </td>
+    <!-- Row 7 Column 4 -->
+    <td align="center">
+      <span class="green-text">[Rx]</span> та <span class="green-text">[Cx]</span>
+    </td>
+  </tr>
+</table>
+<br/>
+Рівні протоколу зроблені для відокремлення протоколу програм користувача та програм адміністратора. Сервер розділяє 
+мережеві з'єднання за рівнем доступу до протоколу. Користувач не зможе використовувати рівень протоколу відповідальний за 
+контроль серверу.<br/>
+<br/>
+Рівні протоколу 3 та 4 зроблені для того, щоб сервер міг керувати своїми програмами. Саме так реалізована динамічне 
+завантаження повідомлень та напрямків у системі.<br/>
+<br/>
+Далі надається карта підтримки протоколу у різних програмах системи (прийом/відправка):<br/>
+<br/>
+<table cellspacing="0" cellpadding="4" border="2" width="100%">
+  <tr>
+    <!-- Row 1 Column 1 -->
+    <td>
+     	<span class="strong">Назва програми</span>
+    </td>
+    <!-- Row 1 Column 2 -->
+    <td>
+      <span class="red-text">[LEVEL_0]</span>
+    </td>
+    <!-- Row 1 Column 3 -->
+    <td>
+      <span class="red-text">[LEVEL_1]</span>
+    </td>
+    <!-- Row 1 Column 4 -->
+    <td>
+      <span class="red-text">[LEVEL_2]</span>
+    </td>
+    <!-- Row 1 Column 5 -->
+    <td>
+      <span class="red-text">[LEVEL_3]</span>
+    </td>
+    <!-- Row 1 Column 6 -->
+    <td>
+      <span class="red-text">[LEVEL_4]</span>
+    </td>
+    <!-- Row 1 Column 7 -->
+    <td>
+      <span class="red-text">[SPECIAL]</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 2 Column 1 -->
+    <td>
+      <span class="select">RibbonServer</span>
+    </td>
+    <!-- Row 2 Column 2 -->
+    <td>
+      Так/Ні
+    </td>
+    <!-- Row 2 Column 3 -->
+    <td>
+      Так/Ні
+    </td>
+    <!-- Row 2 Column 4 -->
+    <td>
+      Так/Ні
+    </td>
+    <!-- Row 2 Column 5 -->
+    <td>
+      Ні/Taк
+    </td>
+    <!-- Row 2 Column 6 -->
+    <td>
+      Ні/Ні
+    </td>
+    <!-- Row 2 Column 7 -->
+    <td>
+      Так/Так
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 3 Column 1 -->
+    <td>
+      <span class="select">RibbonProber</span>
+    </td>
+    <!-- Row 3 Column 2 -->
+    <td>
+      Ні/Так
+    </td>
+    <!-- Row 3 Column 3 -->
+    <td>
+      Ні/Так
+    </td>
+    <!-- Row 3 Column 4 -->
+    <td>
+      Ні/Так
+    </td>
+    <!-- Row 3 Column 5 -->
+    <td>
+      Ні/Так
+    </td>
+    <!-- Row 3 Column 6 -->
+    <td>
+      Ні/Так
+    </td>
+    <!-- Row 3 Column 7 -->
+    <td>
+      Ні/Так
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 4 Column 1 -->
+    <td>
+      <span class="select">RibbonLastMessage</span>
+    </td>
+    <!-- Row 4 Column 2 -->
+    <td>
+      Ні/Так
+    </td>
+    <!-- Row 4 Column 3 -->
+    <td>
+    	Ні/Так
+    </td>
+    <!-- Row 4 Column 4 -->
+    <td>
+      Ні/Ні
+    </td>
+    <!-- Row 4 Column 5 -->
+    <td>
+      Так/Ні
+    </td>
+    <!-- Row 4 Column 6 -->
+    <td>
+      Ні/Ні
+    </td>
+    <!-- Row 4 Column 7 -->
+    <td>
+      Так/Так
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 5 Column 1 -->
+    <td>
+      <span class="select">RibbonClient</span>
+    </td>
+    <!-- Row 5 Column 2 -->
+    <td>
+      Ні/Так
+    </td>
+    <!-- Row 5 Column 3 -->
+    <td>
+      Ні/Так
+    </td>
+    <!-- Row 5 Column 4 -->
+    <td>
+      Ні/Ні
+    </td>
+    <!-- Row 5 Column 5 -->
+    <td>
+      Так/Ні
+    </td>
+    <!-- Row 5 Column 6 -->
+    <td>
+      Ні/Ні
+    </td>
+    <!-- Row 5 Column 7 -->
+    <td>
+      Так/Так
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 6 Column 1 -->
+    <td>
+      <span class="select">RibbonWeb</span>
+    </td>
+    <!-- Row 6 Column 2 -->
+    <td>
+      Ні/Так
+    </td>
+    <!-- Row 6 Column 3 -->
+    <td>
+      Ні/Так
+    </td>
+    <!-- Row 6 Column 4 -->
+    <td>
+      Ні/Ні
+    </td>
+    <!-- Row 6 Column 5 -->
+    <td>
+      Ні/Ні
+    </td>
+    <!-- Row 6 Column 6 -->
+    <td>
+      Ні/Ні
+    </td>
+    <!-- Row 6 Column 7 -->
+    <td>
+      Так/Так
+    </td>
+  </tr>
+</table>
+
+<br/>
+
+
+
+
+<span class="header">Статуси та спеціальні команди <span class="red-text">[SPECIAL]</span></span>
+<br/>
+<br/>
+<span class="code-text"><span class="red-text">[R0]</span> OK:</span> - статус вдалого виконання попередньої команди.<br/>
+<span class="code-text"><span class="red-text">[R1]</span> PROCEED:</span> - статус-команда з вимогою продовжити надсилати команди чи дані до сервера.<br/>
+<span class="code-text"><span class="red-text">[R2]</span> RIBBON_ERROR:<span class="green-text">ТЕКСТ_ПОМИЛКИ</span></span> - повідомлення про помилку 
+виконання попередньої команди. У такому випадку сервер надає детальне текстове повідомлення щодо суті помилки. Клієнтська програма повинна повідомити 
+користувача.<br/>
+<span class="code-text"><span class="red-text">[R3]</span> END:</span> - команда завершення прийому багатострокової черги команд або даних.<br/>
+<span class="code-text"><span class="red-text">[R4]</span> COMMIT_CLOSE:</span> - команда яка підтверджує завершення з’єднання.<br/>
+<span class="code-text"><span class="red-text">[C0]</span> RIBBON_GCTL_SET_STATUS:<span class="green-text">СТАТУС</span></span> - команда 
+яка повідомляє клієнтській програмі статус сервера системи.<br/>
+<span class="code-text"><span class="red-text">[C1]</span> RIBBON_GCTL_FORCE_LOGIN:</span> - команда з вимогою до програми провести аутентифікацію користувача. 
+Незалежно від реалізації програма повинна запитати логін та пароль користувача.<br/>
+<br/>
+
+
+<span class="header">Команди керування з’єднанням <span class="red-text">[LEVEL_0]</span></span>
+<br/>
+<br/>
+<span class="code-text"><span class="red-text">[00]</span> RIBBON_NCTL_INIT:<span class="green-text">ТИП_З’ЄДНАННЯ,ВЕРСІЯ_ПРОТОКОЛУ,ІД_КОДУВАННЯ</span></span> - 
+команда з вимогою прийняти з’єднання та закріпити тип клієнтської програми. Сервер може приймати такі типи як: 
+<span class="code-text"><span class="green-text">CLIENT</span></span> 
+(клієнтська програма простого користувача) та <span class="code-text"><span class="green-text">CONTROL</span></span> 
+(консоль адміністратора для контролю над системою).<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[01]</span> RIBBON_NCTL_LOGIN:<span class="green-text">{ЛОГІН},ПАРОЛЬ</span></span> - команда з вимогою 
+зареєструвати користувача у системі. У випадку вдалого виконання повертає <span class="code-text">OK:<span class="green-text">ІД_СЕСІЇ</span></span> 
+(якщо на сервері увімкнено сесії; див. розділ <span class="strong">"Побудування системи та її запуск"</span>).<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[02]</span> RIBBON_NCTL_GET_ID:</span> - команда з вимогою повернути ідентифікатор сесії. У випадку вдалого виконання повертає 
+<span class="code-text">OK:<span class="green-text">ІД_СЕСІЇ</span></span> 
+(якщо на сервері увімкнено сесії; див. розділ <span class="strong">"Побудування системи та її запуск"</span>).<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[03]</span> RIBBON_NCTL_RESUME:<span class="green-text">ІД_СЕСІЇ</span></span> - команда з вимогою поновити 
+сесію користувача, використовуючи ідентифікатор сесії. У такому разі сесія буде відновлена без 
+надання логіну чи паролю. Якщо відновлення сесії не вдалося, то сервер поверне <span class="code-text">RIBBON_GCTL_FORCE_LOGIN:</span> 
+замість <span class="code-text">OK:</span>.<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[04]</span> RIBBON_NCTL_REM_LOGIN:<span class="green-text">{ЛОГІН},ПАРОЛЬ</span></span> - команда з 
+вимогою провести процедуру аутентифікації користувача без зміни даних поточної сесії. Для вдалого виконання видалений режим на поточному з’єднанні 
+повинен бути увімкнений (див. нижче).<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[05]</span> RIBBON_NCTL_GET_USERNAME:</span> - повернути логін користувача. У випадку вдалого виконання повертає 
+<span class="code-text">OK:<span class="green-text">ІМ’Я_КОРИСТУВАЧА,{ГРУПА_1,ГРУПА_2}</span></span>.<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[06]</span> RIBBON_NCTL_SET_REMOTE_MODE:<span class="green-text">ЧИСЛО</span></span> - 
+увімкнути/вимкнути видалений режим для поточного з’єднання. 
+Аргумент <span class="green-text">0</span> вимикає видалений режим, <span class="green-text">1</span> - вмикає. 
+При вдалому виконанні повертає <span class="code-text">OK:<span class="green-text">ЧИСЛО</span></span>, де 
+<span class="code-text"><span class="green-text">ЧИСЛО</span></span> - це поточний стан видаленого режиму. 
+<span class="strong">Зауваження:</span> система "Стрічка" спроектована таким чином, що видалений режим 
+не може бути активований пересічним користувачем. Див. розділ <span class="strong">"Побудування системи та її запуск"</span>.<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[07]</span> RIBBON_NCTL_ACCESS_CONTEXT:<span class="green-text">{ІМ’Я_КОРИСТУВАЧА}</span></span> - 
+змінити контекст виконання наступної команди. У випадку вдалого виконання сервер змінить контекст доступу поточної сесії та поверне 
+<span class="code-text">PROCEED:</span>. Наступна команда буде виконана з правами вказаного користувача. 
+<span class="strong">Для вдалого виконання цієї команди видалений режим повинен бути активований на поточному 
+з'єднанні <span class="select">(див. віще)</span></span>.<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[08]</span> RIBBON_NCTL_CLOSE:</span> - закрити поточну сесію. 
+Завжди повертає <span class="code-text">COMMIT_CLOSE:</span> та закриває з’єднання. Після цієї команди потрібно 
+знову створити мережеве з’єднання до сервера.<br/>
+<br/>
+
+<span class="header">Базові команди <span class="red-text">[LEVEL_1]</span></span><br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[10]</span> RIBBON_GET_DIRS:</span> - отримати лист напрямків системи. 
+У відповідь система повертає чергу з команд <span class="code-text">RIBBON_UCTL_LOAD_DIR:</span> 
+(<span class="select">див. нижче розділ про команди <span class="red-text">[LEVEL_3]</span></span>) 
+і <span class="code-text">END:</span> у кінці.<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[11]</span> RIBBON_GET_TAGS:</span> - отримати лист тегів системи. 
+У відповідь система повертає чергу з команд <span class="code-text">RIBBON_UCTL_LOAD_TAG:</span> 
+(<span class="select">див. нижче розділ про команди <span class="red-text">[LEVEL_3]</span></span>) 
+і <span class="code-text">END:</span> у кінці.<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[12]</span> RIBBON_LOAD_BASE_FROM_INDEX:<span class="green-text">ІНДЕКС</span></span> - 
+завантажити базу повідомлень починаючи з зазначеного індексу. Якщо вказати замість індексу <span class="green-text">0</span>, 
+то система поверне всю базу повідомлень. 
+У відповідь система повертає чергу команд <span class="code-text">RIBBON_UCTL_LOAD_INDEX:</span> 
+(<span class="select">див. нижче розділ про команди <span class="red-text">[LEVEL_3]</span></span>) і 
+<span class="code-text">END:</span> у кінці.<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[13]</span>
+RIBBON_POST_MESSAGE:<span class="green-text">ІНДЕКС_ПРАЩУРА,[НАПР_1,НАПР_2],МОВА,{Заголовок},[ТЕГ_1,ТЕГ_2],{ОЗНАКИ_ПОВІДОМЛЕННЯ} 
++ ТЕКСТ_ПОВІДОМЛЕННЯ</span> + END:</span> - випустити повідомлення у систему за листом напрямків. При вдалому виконанні 
+повертає OK, після цього сервер запускає широкомовну команду <span class="code-text">RIBBON_UCTL_LOAD_INDEX:</span> 
+(<span class="select">див. нижче розділ про команди <span class="red-text">[LEVEL_3]</span></span>). 
+Ця команда використовує багаторядкову форму: команда 
+<span class="code-text">END:</span> необхідна для завершення прийому даних для команди.<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[14]</span> RIBBON_GET_MESSAGE:
+<span class="green-text">НАПРЯМОК,ІНДЕКС</span></span> - отримати текст повідомлення. Сервер перевіряє доступ до 
+повідомлення і рядками повертає текст повідомлення, завершуючи <span class="code-text">END:</span>.<br/>
+<br/>
+
+
+<span class="code-text">
+<span class="red-text">[15]</span> 
+RIBBON_MODIFY_MESSAGE:<span class="green-text">ІНДЕКС,[НАПР_1,НАПР_2],МОВА,{Заголовок},[ТЕГ_1,ТЕГ_2],{ОЗНАКИ_ПОВІДОМЛЕННЯ} 
++ ЗМІНЕНИЙ_ТЕКСТ</span> + END:</span> - редагувати існуюче повідомлення у системі за індексом. 
+Цією командою можна змінити практично всі дані у повідомлені окрім індексу у базі. 
+Система дозволяє редагувати повідомлення лише автору поточного повідомлення або 
+особам які мають адміністративний доступ до напрямку. 
+При вдалому виконанні 
+повертає OK, після цього сервер запускає широкомовну команду <span class="code-text">RIBBON_UCTL_UPDATE_INDEX:</span> 
+(<span class="select">див. нижче розділ про команди <span class="red-text">[LEVEL_3]</span></span>). 
+Ця команда використовує багаторядкову форму: команда 
+<span class="code-text">END:</span> необхідна для завершення прийому даних для команди.<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[16]</span> RIBBON_DELETE_MESSAGE:<span class="green-text">ІНДЕКС</span></span> 
+- видалити повідомлення з системи. Сервер видалить усі копії повідомлення за напрямків та поверне 
+<span class="code-text">OK:</span> разом з широкомовною командою 
+<span class="code-text">RIBBON_UCTL_DELETE_INDEX:</span> 
+(<span class="select">див. нижче розділ про команди <span class="red-text">[LEVEL_3]</span></span>).<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[17]</span> RIBBON_ADD_MESSAGE_PROPERTY:<span class="green-text">ІНДЕКС,ТИП_ОЗНАКИ,{ТЕКСТОВЕ_ПОВІДОМЛЕННЯ}</span></span> - додання системної ознаки у повідомлення. Для 
+вдалого виконання система вимагає від користувача повний доступ до повідомлення. Повертає 
+<span class="code-text">OK:</span> та широкомовну команду <span class="code-text">RIBBON_UCTL_UPDATE_INDEX:</span>.<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[18]</span> RIBBON_DEL_MESSAGE_PROPERTY:<span class="green-text">ІНДЕКС,ТИП_ОЗНАКИ,{ДАТА}</span></span> - видалення системної ознаки з повідомлення. 
+Дата створення ознаки надається для ідентифікації ознаки. 
+Для вдалого виконання система вимагає від користувача повний доступ до повідомлення. Повертає 
+<span class="code-text">OK:</span> та широкомовну команду <span class="code-text">RIBBON_UCTL_UPDATE_INDEX:</span>.<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[19]</span> RIBBON_GET_USERS:</span> - отримати лист з даними 
+користувачів системи (окрім користувачів групи ADM). Лист користувачів використовується для маніпуляцій з 
+авторськими правами. Сервер повертає CSV-рядки у вигляді 
+<span class="code-text"><span class="green-text">{ІМ'Я_КОРИСТУВАЧА},{КОМЕНТАР}</span></span> та 
+<span class="code-text">END:</span>.<br/>
+<br/>
+
+<span class="header">Команди керування сервером <span class="red-text">[LEVEL_2]</span></span><br/>
+<br/>
+
+<span class="strong">Специфікація рівня протоколу <span class="red-text">[LEVEL_2]</span> запланована на випуск 
+версії <span class="green-text">b1</span>.</span><br/>
+<br/>
+
+<span class="header">Команди керування клієнтом <span class="red-text">[LEVEL_3]</span></span><br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[30]</span> 
+RIBBON_UCTL_LOAD_DIR:<span class="green-text">НАПРЯМОК,{КОМЕНТАР},[МОВА_1,МОВА_2],[ЛИСТ_ДОСТУПУ],[ЛИСТ_ЕКСПОРТУ]</span></span> - 
+додати новий напрямок у лист напрямків клієнтської програми. Нічого не повертає.<br/>
+<br/>
+
+
+<span class="code-text"><span class="red-text">[31]</span> 
+RIBBON_UCTL_UPDATE_DIR:<span class="green-text">СТАРИЙ_НАПРЯМОК,НАПРЯМОК,{КОМЕНТАР},[МОВА_1,МОВА_2],[ЛИСТ_ДОСТУПУ],[ЛИСТ_ЕКСПОРТУ]
+</span></span>- відновити дані старого напрямку у випадку змін.<br/>
+<br/> 
+
+<span class="code-text"><span class="red-text">[32]</span> RIBBON_UCTL_LOAD_TAG:<span class="green-text">ТЕГ,[ЛИСТ_ІНДЕКСІВ]</span></span> - 
+завантажити тег з листом його індексів до клієнтської програми.<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[33]</span> RIBBON_UCTL_LOAD_INDEX:<span class="green-text">ІНДЕКС,ІНДЕКС_ПРАЩУРА,[НАПР1,НАПР2],МОВА,{ЗАГОЛОВОК},ДАТА_ТА_ЧАС,{АВТОР_ОРИГІНАЛА},{АВТОР},[ТЕГ1,ТЕГ2,ТЕГ3],{СИСТЕМНІ_ОЗНАКИ}</span></span> - завантажити дані нового повідомлення у системі (без завантаження тексту повідомлення).<br/>
+<br/>
+
+
+<span class="code-text"><span class="red-text">[34]</span> RIBBON_UCTL_UPDATE_INDEX:<span class="green-text">ІНДЕКС,ІНДЕКС_ПРАЩУРА,[НАПР1,НАПР2],МОВА,{ЗАГОЛОВОК},ДАТА_ТА_ЧАС,{АВТОР_ОРИГІНАЛА},{АВТОР},[ТЕГ1,ТЕГ2,ТЕГ3],{СИСТЕМНІ_ОЗНАКИ}</span></span> - оновити дані повідомлення у програмі (без завантаження тексту повідомлення).<br/>
+<br/>
+
+<span class="code-text"><span class="red-text">[35]</span> RIBBON_UCTL_DELETE_INDEX:<span class="green-text">ІНДЕКС</span></span>
+ - вилучити дані про повідомлення з клієнтської програми.<br/>
+<br/>
+
+
+<span class="header">Команди керування консоллю адміністратора <span class="red-text">[LEVEL_4]</span></span><br/>
+<br/>
+
+<span class="strong">Специфікація рівня протоколу <span class="red-text">[LEVEL_4]</span> запланована на випуск 
+версії <span class="green-text">b1</span>.</span><br/>
+<br/>
+
+</div>
+</body>
+</html>

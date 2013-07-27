@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- Created on 23 лип 2013 17:19:15 -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>
+         Побудування системи та її запуск
+      </title>
+      <meta name="GENERATOR" content="Arachnophilia 5.5"/>
+      <meta name="FORMATTER" content="Arachnophilia 5.5"/>
+      <link REL="stylesheet" type="text/css" href="../spec.css">
+   </head>
+
+<body>
+<div align="center" class="m-header">Побудування системи та її запуск</div>
+<br/>
+<a href="_contents.html"><<<Назад</a>
+<br/>
+<br/>
+<div class="main">
+<span class="header">Компіляція</span><br/>
+<br/>
+
+Для побудування мінімальної комплектації системи "Стрічка" вам потрібно: 
+встановлена JDK 7 та сирці RibbonServer, libRibbonData та libRibbonIO. 
+Посилання на сирці системи можна знайти у розділі <span class="strong">"Загальна інформація"</span>. 
+Для роботи з сервером вам також знадобляться сирці RibbonProber, RibbonClient та libRibbonApp. 
+Зараз система знаходиться у розробці, тому треба завантажити останні сирці з гілки <span class="code-text">devel</span> на 
+<span class="strong">GitHub</span> (можуть виникнути помилки), чи завантажити останній тестовий "зріз" помічений 
+тегом <span class="code-text">slice-X</span> (більш стабільний).<br/>
+<br/>
+
+Далі потрібно видобути сирці до окремої теки. Потрібно увійти у теку проекту libRibbonData та запустити 
+збірку командую <span class="code-text">ant</span>. Після вдалою компіляції з'явиться тека dist з готовим файлом 
+бібліотеки (<span class="green-text">libRibbonData.jar</span>). Таким чином компілюються й інші бібліотеки. 
+Спочатку потрібно скомпілювати бібліотеки системи (libRibbonData, libRibbonApp, libRibbonIO), а потім вже самі програми. 
+Збірник <span class="code-text">ant</span> у випадку з програмами може повертати помилку, але повторний запуск проходить 
+без помилок і програма компілюється.<br/>
+<br/>
+
+<span class="header">Налаштування сервера</span><br/>
+<br/>
+
+
+Після компіляції слід перенести виконавчі файли програми RibbonServer разом з бібліотеками в окрему теку. Також до цієї теки 
+слід перенести файл <span class="green-text">server.properties</span>, який постачається з проектом RibbonServer. Це головний 
+файл конфігурації сервера без якого система не зможе працювати.<br/>
+<br/>
+
+Перед запуском сервера потрібно змінити деякі налаштування у головному файлі конфігурації. 
+<span class="strong">Для першого тестового запуску сервера достатньо вказати шлях до теки, де сервер може створити 
+базу повідомлень (<span class="select">параметр base_path</span>).</span>
+Нижче зведені усі налаштування які доступні через цей файл:<br/>
+<br/>
+
+<table cellspacing="0" cellpadding="4" border="2" width="100%">
+  <tr>
+    <!-- Row 1 Column 1 -->
+    <td align="center">
+      <span class="strong">Параметр</span>
+    </td>
+    <!-- Row 1 Column 2 -->
+    <td align="center">
+      <span class="strong">Тип даних</span>
+    </td>
+    <!-- Row 1 Column 3 -->
+    <td align="center">
+      <span class="strong">Порогові значення</span>
+    </td>
+    <!-- Row 1 Column 4 -->
+    <td align="center">
+      <span class="strong">Опис</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 2 Column 1 -->
+    <td colspan="4" align="center">
+      <span class="strong"><span class="select">Налаштування бази повідомлень</span></span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 3 Column 1 -->
+    <td align="center">
+      base_path
+    </td>
+    <!-- Row 3 Column 2 -->
+    <td align="center">
+      Стрінг
+    </td>
+    <!-- Row 3 Column 3 -->
+    <td align="center">
+      --
+    </td>
+    <!-- Row 3 Column 4 -->
+    <td>
+      Вказує на теку в якій зберігається база повідомлень. 
+      Цей параметр не перевіряється системою, але, при невірному 
+      шляху до теки, сервер зупинить свою роботу з помилкою. 
+      <span class="strong">Слід створити окрему порожню теку та вказати її шлях тут.</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 4 Column 1 -->
+    <td align="center">
+      base_allow_attachments
+    </td>
+    <!-- Row 4 Column 2 -->
+    <td align="center">
+      Булеве значення
+    </td>
+    <!-- Row 4 Column 3 -->
+    <td align="center">
+      0 чи 1
+    </td>
+    <!-- Row 4 Column 4 -->
+    <td>
+      Дозволяти користувачам системи закріпляти окремі файли за повідомленнями. 
+      За замовчуванням вимкнено.
+      <br>
+      <span class="red-text">[ФУНКЦІОНАЛ НЕ РЕАЛІЗОВАНО]</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 5 Column 1 -->
+    <td align="center" colspan="4">
+      <span class="strong"><span class="select">Налаштування мережі</span></span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 6 Column 1 -->
+    <td align="center">
+     	networking_port
+    </td>
+    <!-- Row 6 Column 2 -->
+    <td align="center">
+      Ціле
+    </td>
+    <!-- Row 6 Column 3 -->
+    <td align="center">
+      Від 1 до 65535
+    </td>
+    <!-- Row 6 Column 4 -->
+    <td>
+      Вказує серверу який мережевий порт потрібно слухати 
+      для отримання команд. На *nix системах щоб слухати порти 
+     	від 1 до 1023 потрібно запускати сервер з правами 
+      суперкористувача root. За замовчуванням вказує на порт 3003.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 7 Column 1 -->
+    <td align="center">
+      networking_allow_remote
+    </td>
+    <!-- Row 7 Column 2 -->
+    <td align="center">
+      Булеве значення
+    </td>
+    <!-- Row 7 Column 3 -->
+    <td align="center">
+      0 чи 1
+    </td>
+    <!-- Row 7 Column 4 -->
+    <td>
+      Дозволяти з'єднуватись зовнішнім хостам. Якщо вимкнено, 
+      то сервер буде приймати з'єднання лише від адреси 
+      127.0.0.1. Використовується для тестових цілей. За замовчуванням 
+      система дозволяє зовнішні з'єднання.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 8 Column 1 -->
+    <td align="center">
+      networking_max_connections
+    </td>
+    <!-- Row 8 Column 2 -->
+    <td align="center">
+      Ціле
+    </td>
+    <!-- Row 8 Column 3 -->
+    <td align="center">
+     	-1 та від 1 до 2000
+    </td>
+    <!-- Row 8 Column 4 -->
+    <td>
+      Вказує серверу максимальну кількість одночасних мережевих 
+      з'єднань. Після досягнення межі, сервер буде закривати 
+      усі нові з'єднання. Використовується для тестових цілей. 
+      Значення -1 вимикає перевірку кількості з'єднань до сервера. 
+      Значення за замовчуванням: -1.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 9 Column 1 -->
+    <td align="center" colspan="4">
+      <span class="strong"><span class="select">Налаштування кешу</span></span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 10 Column 1 -->
+    <td align="center">
+      cache_enabled
+    </td>
+    <!-- Row 10 Column 2 -->
+    <td align="center">
+      Булеве значення
+    </td>
+    <!-- Row 10 Column 3 -->
+    <td align="center">
+      0 чи 1
+    </td>
+    <!-- Row 10 Column 4 -->
+    <td>
+      Вмикає механізм кешування повідомлень. За замовчуванням вимкнено.
+      <br><span class="red-text">[ФУНКЦІОНАЛ НЕ РЕАЛІЗОВАНО]</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 11 Column 1 -->
+    <td align="center">
+      cache_size
+    </td>
+    <!-- Row 11 Column 2 -->
+    <td align="center">
+      Ціле
+    </td>
+    <!-- Row 11 Column 3 -->
+    <td align="center">
+      Від 1 до 1000
+    </td>
+    <!-- Row 11 Column 4 -->
+    <td>
+      Розмір кешу у повідомленнях. За замовчуванням дорівнює 10.
+      <br><span class="red-text">[ФУНКЦІОНАЛ НЕ РЕАЛІЗОВАНО]</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 12 Column 1 -->
+    <td align="center" colspan="4">
+      <span class="strong"><span class="select">Налаштування доступу</span></span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 13 Column 1 -->
+    <td align="center">
+      access_all_mask
+    </td>
+    <!-- Row 13 Column 2 -->
+    <td align="center">
+      Стрінг
+    </td>
+    <!-- Row 13 Column 3 -->
+    <td align="center">
+    	Від 000 до 111.<br/>
+      Довжина 3 символи, дозволені тільки 0 та 1
+    </td>
+    <!-- Row 13 Column 4 -->
+    <td align>
+      Визначає глобальні дозволи для спеціальної групи ALL. 
+      Ця маска доступу впливає лише на ті напрямки, в листах 
+      доступу яких не означені окрема права групи ALL. Значення за 
+      замовчуванням - 100.
+      <br/><span class="red-text">Цей параметр перевіряється на коректність системою - 
+      сервер зробить попередження при запуску, якщо маска не відповідає формату.</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 14 Column 1 -->
+    <td align="center">
+      access_allow_multiplie_login
+    </td>
+    <!-- Row 14 Column 2 -->
+    <td align="center">
+      Булеве значення
+    </td>
+    <!-- Row 14 Column 3 -->
+    <td align="center">
+      0 чи 1
+    </td>
+    <!-- Row 14 Column 4 -->
+    <td>
+      Визначає чи може користувач одночасно працювати на кілька з'єднаннях 
+      одночасно. Якщо цей параметр увімкнено система буде перевіряти при 
+      кожній аутентифікації чи є вже у цього користувача активні з'єднання. 
+      У разі, якщо користувач вже автентифікований, він не зможе повторно увійти у 
+      систему з іншого з'єднання. Це можна використовувати для того щоб не дозволяти 
+      використовувати один логін і пароль одночасно на багатьох комп'ютерах.
+      За замовчуванням цей параметр вимкнено.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 15 Column 1 -->
+    <td align="center">
+      access_enable_sessions
+    </td>
+    <!-- Row 15 Column 2 -->
+    <td align="center">
+      Булеве значення
+    </td>
+    <!-- Row 15 Column 3 -->
+    <td align="center">
+      0 чи 1
+    </td>
+    <!-- Row 15 Column 4 -->
+    <td>
+      Дозволяти користувачам входити до системи за ідентефікатором 
+      попередньої сесії. Увімкнено за замовчуванням.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 16 Column 1 -->
+    <td align="center">
+      access_session_count_max
+    </td>
+    <!-- Row 16 Column 2 -->
+    <td align="center">
+      Ціле
+    </td>
+    <!-- Row 16 Column 3 -->
+    <td align="center">
+      Від 1 до 100
+    </td>
+    <!-- Row 16 Column 4 -->
+    <td>
+      Кількість максимального використання ідентифікатора сесії. 
+      Після вичерпання цього ліміту, сервер не прийме ідентифікатор та 
+      змусить користувача надати свій логін і пароль. 
+      За замовчуванням дорівнюється 10.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 17 Column 1 -->
+    <td align="center">
+      access_allow_remote
+    </td>
+    <!-- Row 17 Column 2 -->
+    <td align="center">
+      Булеве значення
+    </td>
+    <!-- Row 17 Column 3 -->
+    <td align="center">
+      0 чи 1
+    </td>
+    <!-- Row 17 Column 4 -->
+    <td>
+      Дозволити використовувати видалений режим у мережевих 
+      з'єднаннях. Необхідно для роботи веб-інтерфейсу та інших 
+      фасадів системи. За замовчуванням увімкнено.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 18 Column 1 -->
+    <td align="center">
+      access_remote_group
+    </td>
+    <!-- Row 18 Column 2 -->
+    <td align="center">
+      Стрінг
+    </td>
+    <!-- Row 18 Column 3 -->
+    <td align="center">
+      --
+    </td>
+    <!-- Row 18 Column 4 -->
+    <td>
+      Вказує на групу користувачів якій дозволено використовувати видалений режим. 
+      За замовчуванням вказує на групу ADM.
+			<br/><span class="red-text">Цей параметр перевіряється на коректність системою - 
+      сервер аварійно завершить роботу з помилкою, якщо групи не існує.</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 19 Column 1 -->
+    <td align="center" colspan="4">
+      <span class="strong"><span class="select">Загальні налаштування</span></span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 20 Column 1 -->
+    <td align="center">
+      opt_post_init
+    </td>
+    <!-- Row 20 Column 2 -->
+    <td align="center">
+      Булеве значення
+    </td>
+    <!-- Row 20 Column 3 -->
+    <td align="center">
+      0 чи 1
+    </td>
+    <!-- Row 20 Column 4 -->
+    <td>
+      Випускати тестове повідомлення при запуску сервера. 
+      За замовчуванням увімкнено.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 21 Column 1 -->
+    <td align="center">
+      opt_create_reports
+    </td>
+    <!-- Row 21 Column 2 -->
+    <td align="center">
+      Булеве значення
+    </td>
+    <!-- Row 21 Column 3 -->
+    <td align="center">
+      0 чи 1
+    </td>
+    <!-- Row 21 Column 4 -->
+    <td>
+      Створювати текстові рапорти щодо роботи системи і 
+      стану бази повідомлень. За замовчуванням увімкнено.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 22 Column 1 -->
+    <td align="center" colspan="4">
+      <span class="strong"><span class="select">Налаштування імпорту/експорту</span></span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 23 Column 1 -->
+    <td align="center">
+      io_enabled
+    </td>
+    <!-- Row 23 Column 2 -->
+    <td align="center">
+      Булеве значення
+    </td>
+    <!-- Row 23 Column 3 -->
+    <td align="center">
+      0 чи 1
+    </td>
+    <!-- Row 23 Column 4 -->
+    <td>
+      Увімкнути імпорт та експорт повідомлень на сервері. За замовчуванням увімкнено.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 24 Column 1 -->
+    <td align="center">
+      io_ignore_dirty
+    </td>
+    <!-- Row 24 Column 2 -->
+    <td align="center">
+      Булеве значення
+    </td>
+    <!-- Row 24 Column 3 -->
+    <td align="center">
+      0 чи 1
+    </td>
+    <!-- Row 24 Column 4 -->
+    <td>
+      Ігнорувати спроби увімкнути "брудний режим" на сервері. 
+      За замовчуванням вимкнено.<br/>
+   		<span class="red-text">ПОПЕРЕДЖЕННЯ: цей параметр не слід вмикати на робочої системі!</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 25 Column 1 -->
+    <td align="center">
+      io_import_em_dir
+    </td>
+    <!-- Row 25 Column 2 -->
+    <td align="center">
+      Стрінг
+    </td>
+    <!-- Row 25 Column 3 -->
+    <td align="center">
+      --
+    </td>
+    <!-- Row 25 Column 4 -->
+    <td>
+      Вказує на аварійний напрямок, який буде використовуватись, 
+      якщо модуль імпорту не може визначити на який напрямок випускати повідомлення.
+      За замовчуванням вказує на напрямок СИСТЕМА.Загублене.
+			<br/><span class="red-text">Цей параметр перевіряється на коректність системою - 
+      сервер аварійно завершить роботу з помилкою, якщо напрямку не існує.</span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 26 Column 1 -->
+    <td align="center">
+      io_export_quene_size
+    </td>
+    <!-- Row 26 Column 2 -->
+    <td align="center">
+      Ціле
+    </td>
+    <!-- Row 26 Column 3 -->
+    <td align="center">
+      Від 1 до 200
+    </td>
+    <!-- Row 26 Column 4 -->
+    <td>
+      Розмір черги повідомлень для експорту. За замовчуванням дорівнює 30.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 27 Column 1 -->
+    <td align="center">
+      io_export_errquene_size
+    </td>
+    <!-- Row 27 Column 2 -->
+    <td align="center">
+      Ціле
+    </td>
+    <!-- Row 27 Column 3 -->
+    <td align="center">
+      Від 1 до 200
+    </td>
+    <!-- Row 27 Column 4 -->
+    <td>
+      Розмір аварійної черги повідомлень експорт котрих було завершено помилкою. 
+      За замовчуванням дорівнює 10.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 28 Column 1 -->
+    <td align="center" colspan="4">
+      <span class="strong"><span class="select">Налаштування дебагінгу</span></span>
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 29 Column 1 -->
+    <td align="center">
+      debug_post_exceptions
+    </td>
+    <!-- Row 29 Column 2 -->
+    <td align="center">
+      Булеве значення
+    </td>
+    <!-- Row 29 Column 3 -->
+    <td align="center">
+      0 чи 1
+    </td>
+    <!-- Row 29 Column 4 -->
+    <td>
+      Увімкнути випуск повідомлень при отриманні виключення на 
+      сервері. За замовчуванням увімкнено.
+    </td>
+  </tr>
+  <tr>
+    <!-- Row 30 Column 1 -->
+    <td align="center">
+      debug_post_dir
+    </td>
+    <!-- Row 30 Column 2 -->
+    <td align="center">
+      Стрінг
+    </td>
+    <!-- Row 30 Column 3 -->
+    <td align="center">
+      --
+    </td>
+    <!-- Row 30 Column 4 -->
+    <td>
+     Вказує на напрямок на який будуть випускатись повідомлення про виключення. 
+     За замовчуванням вказує на напрямок СИСТЕМА.Помилки.
+     <br/><span class="red-text">Цей параметр перевіряється на коректність системою - 
+     сервер аварійно завершить роботу з помилкою, якщо напрямку не існує.</span>
+    </td>
+  </tr>
+</table>
+<br/>
+
+<span class="strong">Видаляти параметри з файлу конфігурації не рекомендовано!</span>
+
+<br/>
+<br/>
+Після початкового налаштування можна запускати сервер, який запускається командою 
+<span class="code-text">java -jar RibbonServer.jar</span>. Після цього сервер самостійно 
+завантажить файл конфігурації та створить за вказаним шляхом базу повідомлень (<span class="select">докладніше про 
+схему бази повідомлень див. розділ <span class="strong">"Структура бази повідомлень"</span></span>). Після цього сервер 
+відкриває мережевий порт для клієнтських програм.<br/>
+<br/>
+
+<span class="header">Перевірка роботи системи</span><br/>
+<br/>
+Щоб перевірити роботу системи, потрібно з'єднатись до неї за допомогою клієнтської програми. Для цього 
+можна використовувати декілька програм: RibbonProber та RibbonClient. Перша дозволяє перевірити роботу 
+мережевого протоколу. Друга - повноціний клієнт системи.
+
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>
+         Структури даних
+      </title>
+      <link REL="stylesheet" type="text/css" href="../spec.css">
+      <meta name="GENERATOR" content="Arachnophilia 5.5"/>
+      <meta name="FORMATTER" content="Arachnophilia 5.5"/>
+   </head>
+
+<body>
+<div class="main">
+<div align="center" class="m-header">Структури даних</div>
+<br/>
+<a href="_contents.html"><<<Назад</a><br/>
+<br/>
+<span class="header">Структури у системі "Стрічка"</span><br/>
+<br/>
+У системі є багато складних та простих структур даних, якими можна оперувати. 
+Основою основ є повідомлення. Повідомлення за своєю структурою включає до себе: 
+заголовок, час випуску, текстовий зміст та ще багато іншого. Повідомлення не існує 
+у системі особисто. Кожне повідомлення має буди прикріплено до напрямку.<br/>
+<br/>
+Друга важлива структура - це напрямок, який визначає деякий технологічний етап, 
+на якому перебуває повідомлення. Система використовує деревоподібну схему напрямків, 
+тому дерево напрямків можна уявити як систему тек та файлів, де теки представлені напрямками, 
+а файли - повідомленнями. При цьому система дозволяє перебувати одному повідомленню у 
+декількох напрямках.<br/>
+<br/>
+Як вже було сказано, напрямки - це технологічна помітка повідомлення. Вони виражають 
+інформаційні потоки в інформаційному агентстві або видавництві. Структура напрямків не 
+повинна залежати від зміста повідомлень, а повинна залежати від внутрішньої структури 
+організації. Створювати напрямки може тільки адміністратор системи.<br/>
+<br/>
+Система також підтримує теги або ключові слова, якими може буди помічене повідомлення. 
+Теги дозволяють організувати навігацію за внутрішнім змістом повідомлення. Теги створюються 
+системою автоматично при випуску повідомлення з новим тегом.<br/>
+<br/>
+Про інші важливі структури даних та їх внутрішню реалізацію дивиться нижче.
+<br/>
+<br/>
+<span class="header">CSV-формат у системі</span><br/>
+<br/>
+Кожна структура даних системи може бути представлена у вигляді CSV-рядка 
+(Coma Separeted Value). Листи напрямків, індекси повідомлень та інші системні 
+файли зберігаються у форматі CSV. Слід зауважити що формат CSV, який використовує 
+"Стрічка" має розбіжності з самим стандартом CSV.<br/>
+<br/>
+Загальний рядок у вигляді CSV (базовий формат) виглядає так:<br/>
+
+<pre class="code-frame">
+слово1,слово2,слово3
+</pre>
+
+Вимоги системи були за межами можливостей оригінального формату CSV, тому система 
+підтримує не тільки оригінальний формат, а ще й більш складний синтаксис 
+(поширений формат):<br/>
+
+<pre class="code-frame">
+слово1,[елемент1,елемент2,елемент3],{Зона, яка ігнорує кому}
+</pre>
+
+Такий CSV-рядок після парсингу має перетворитись на два слова (<span class="code-text">слово1</span> 
+та <span class="code-text">Зона, яка ігнорує кому</span>) з додатковим масивом елементів у квадратних 
+лапках.<br/>
+<br/>
+
+Є також виключення у поширеному форматі, яке було прийняте для реалізації системних ознак повідомлень. 
+Поширений формат дозволяє вкладання цілих CSV-рядкыв у зону ігнорування коми, але парсинг цієї області вже 
+проводиться виключно самостійно. Приклад:<br/>
+
+<pre class="code-frame">
+{URGENT,{Білобров М.М.},{Срочно!},23:43:27 20.01.2013$MARK_ADM,{Непочатов С.І.},{Выпущено НС},23:44:24 20.01.2013}
+</pre>
+
+Система у такому випадку просто поверне цю ж саму строку без фігурних лапок для самостійного парсингу.
+<br/>
+<br/>
+Для роботи з CSV створено два класи: <span class="code-text">CsvElder</span> та <span class="code-text">CsvFormat</span>. 
+Абстрактний клас <span class="code-text">CsvElder</span> є пращуром усіх інших системних структур даних. 
+Він містить поля та методи для роботи з форматом та допомагає відтворювати структури з CSV-формату, та 
+перетворювати їх у CSV-строку.<br/>
+<br/>
+Поля класу <span class="code-text">CsvElder</span>:
+<ul>
+  <li><span class="code-text">baseCount <span class="green-text">[Integer]</span></span> - 
+  кількість базових слів.</li>
+  <li><span class="code-text">groupCount <span class="green-text">[Integer]</span></span> - 
+  кількість груп.</li>
+  <li><span class="code-text">currentFormat <span class="green-text">[csvFormatType]</span></span> - 
+  ідентифікатор типу CSV-рядка (<span class="code-text"><span class="green-text">SimpleCsv</span></span>
+   - базовий формат, <span class="code-text"><span class="green-text">ComplexCsv</span></span> - поширений формат та 
+ 	<span class="code-text"><span class="green-text">DoubleStruct</span></span> - подвійна структура типу 
+  <span class="code-text">ключ:значення</span>).</li>
+</ul>
+
+Перетворення у формат CSV викликається методом <span class="code-text"><span class="red-text">toCsv()</span></span>, 
+який повертає форматований CSV-рядок.
+<br/>
+<br/>
+Клас <span class="code-text">CsvFormat</span> надає методи для роботи з CSV-форматом, комплексного та базового розбору строки.
+<br/>
+<br/>
+
+<span class="header">Напрямки</span><br/>
+<br/>
+
+Напрямки у системі представлені класами <span class="code-text">DirSchema</span> та 
+<span class="code-text">DirEntry</span>. Екземпляр <span class="code-text">DirSchema</span> - це об'єкт-заготовка для 
+кінцевого об'єкту напрямку. Саме <span class="code-text">DirSchema</span> використовується системою для відтворення 
+напрямка з CSV-формату. Клас <span class="code-text">DirEntry</span> успадковує клас <span class="code-text">DirSchema</span> 
+та використовується для побудування дерева напрямків. Для побудування кореневого напрямку об'єкт-заготовка не потрібен, 
+цього використовується порожній конструктор класу <span class="code-text">DirEntry</span>. Об'єкт заготовки використовується 
+методом <span class="code-text"><span class="red-text">insertDir()</span></span> для побудування напрямків за схемою. Цей метод 
+також може створювати порожні напрямки, якщо шлях від коріня до кінцевого напрямку ще не створено.<br/>
+
+<br/>
+Поля класу <span class="code-text">DirSchema</span>:
+<ul>
+  <li><span class="code-text">FULL_DIR_NAME <span class="green-text">[String]</span></span> - 
+  повне ім'я напрямку (зі шляхом від кореня).</li>
+  <li><span class="code-text">COMM <span class="green-text">[String]</span></span> - 
+  короткий опис напрямку.</li>
+  <li><span class="code-text">DIR_LANGS <span class="green-text">[Array:String]</span></span> - 
+  лист мов за якими будуть прийматися повідомлення. <span class="red-text">Ця функція ще не реалізована.</span></li>
+  <li><span class="code-text">SH_ACCESS <span class="green-text">[Array:String]</span></span> - 
+  лист схем правил обмеження доступу до напрямку.</li>
+  <li><span class="code-text">DIR_EXPORTS <span class="green-text">[Array:String]</span></span> - 
+  лист схем експорту повідомлень з системи.</li>
+</ul>
+
+Поля класу <span class="code-text">DirEntry</span> (без успадкованих):
+<ul>
+  <li><span class="code-text">DIR_NAME <span class="green-text">[String]</span></span> - 
+  коротка назва напрямку.</li>
+  <li><span class="code-text">FOLDED_DIR <span class="green-text">[ArrayList:DirEntry]</span></span> - 
+  лист напрямків-нащадків.</li>
+  <li><span class="code-text">DIR_INDEXCES <span class="green-text">[ArrayList:String]</span></span> - 
+  лист індексів повідомлень які зберігаються саме у цьому напрямку.</li>
+  <li><span class="code-text">DIR_PATH <span class="green-text">[String]</span></span> - 
+  шлях до файлової директорії у якій будуть зберігатись файли повідомлень 
+  <span class="select">(використовується лише сервером)</span>.</li>
+  <li><span class="code-text">DIR_ACCESS <span class="green-text">[Array:DirPermissionEntry]</span></span> - 
+  лист персональних та групових дозволів до напрямку.</li>
+</ul>
+
+Загальний вигляд напрямку у форматі CSV:<br/>
+
+<pre class="code-frame">
+ИМ'Я_НАПРЯМКУ,{КОМЕНТАР},[МОВА_1,МОВА_2],[ЛИСТ_ДОСТУПУ],[ЛИСТ_ЕКСПОРТУ]
+</pre>
+
+Приклад напрямку у форматі CSV:<br/>
+
+<pre class="code-frame">
+СИСТЕМА.Розробка,{Новини про розробку},[UA,RU],[GALL:100,Gрозробники:111],[DEV_plain,DEV_ftp]
+</pre>
+<br/>
+
+<span class="header">Повідомлення</span><br/>
+
+<br/>
+Повідомлення представлені у системі класами <span class="code-text">MessageEntry</span> та 
+<span class="code-text">Message</span> (успадковує <span class="code-text">MessageEntry</span>). 
+Екземпляр <span class="code-text">MessageEntry</span> містить усі відомості щодо повідомлення 
+окрім самого тексту повідомлення. Для зберігання тексту повідомлення використовується клас 
+<span class="code-text">Message</span>, який додає лише одне поле - 
+<span class="code-text">CONTENT <span class="green-text">[String]</span></span>.<br/>
+
+<br/>
+Поля класу <span class="code-text">MessageEntry</span>:
+<ul>
+  <li><span class="code-text">ORIG_INDEX <span class="green-text">[String]</span></span> - 
+  індекс повідомлення-пращура.</li>
+  <li><span class="code-text">INDEX <span class="green-text">[String]</span></span> - 
+  індекс цього повідомлення.</li>
+  <li><span class="code-text">DIRS <span class="green-text">[Array:String]</span></span> - 
+  лист напрямків за якими випущено повідомлення.</li>
+  <li><span class="code-text">HEADER <span class="green-text">[String]</span></span> - 
+  заголовок повідомлення.</li>
+  <li><span class="code-text">DATE <span class="green-text">[String]</span></span> - 
+  дата та час випуску.</li>
+  <li><span class="code-text">ORIG_AUTHOR <span class="green-text">[String]</span></span> - 
+  ім'я автора повідомлення-пращура.</li>
+  <li><span class="code-text">AUTHOR <span class="green-text">[String]</span></span> - 
+  ім'я автора цього повідомлення.</li>
+  <li><span class="code-text">TAGS <span class="green-text">[Array:String]</span></span> - 
+  лист тегів повідомлення (ключові слова).</li>
+  <li><span class="code-text">PROPERTIES <span class="green-text">[ArrayList:MessageProperty]</span></span> - 
+  лист системних ознак повідомлення.</li>
+  <li><span class="code-text">LANG <span class="green-text">[String]</span></span> - 
+  ідентефікатор мови повідомлення за кодом 
+  (<span class="code-text"><span class="green-text">UA</span></span> чи 
+  <span class="code-text"><span class="green-text">RU</span></span>) або 
+  <span class="code-text"><span class="green-text">UKN</span></span> (якшо мова невідома).</li>
+</ul>
+
+Загальний вигляд повідомлення у CSV-форматі:<br/>
+
+<pre class="code-frame">
+ІНДЕКС,ІНДЕКС_ПРАЩУРА,[НАПР1,НАПР2],МОВА,{ЗАГОЛОВОК},ДАТА_ТА_ЧАС,{АВТОР_ОРИГІНАЛА},{АВТОР},[ТЕГ1,ТЕГ2,ТЕГ3],{СИСТЕМНІ_ОЗНАКИ}
+</pre>
+
+Приклад повідомлення у форматі CSV:<br/>
+
+<pre class="code-frame">
+0000000002,-1,[СИСТЕМА.ТЕСТ,СИСТЕМА.Розробка],UA,{Знову працює!},25.05.2012 10:00,{},{Білобров М.М.},[система,розробка,ІТУ],{}
+</pre>
+
+<br/>
+<span class="header">Системні ознаки</span><br/>
+<br/>
+
+Системні ознаки представлені класом <span class="code-text">MessageProperty</span>. Ознаки вказують 
+на: як повідомлення попало у систему, чи є воно терміновим й тощо. Кожна ознака має свій тип. У системі є свій лист типів, які 
+використовуються системою. Також система може реєструвати нові типи ознак одночасно з роботою.<br/>
+<br/>
+
+Типи ознак системи:<br/>
+<ul>
+	<li><span class="code-text"><span class="red-text">URGENT</span> {null}</span> - 
+	ознака терміновості повідомлення. Використовується програмою-клієнтом.</li>
+	<li><span class="code-text"><span class="red-text">MARK_USER</span> {ПОМІТКА}</span> - 
+	текстовий коментар користувача, який закріплено за цим повідомленням.</li>
+	<li><span class="code-text"><span class="red-text">MARK_ADM</span> {ПОМІТКА}</span> - 
+	текстовий коментар адміністратора системи, який закріплено за цим повідомленням.</li>
+	<li><span class="code-text"><span class="red-text">PROCESSING_FORBIDDEN</span> {null}</span> - 
+	ознака того що це повідомлення не можна експортувати з системи.</li>
+	<li><span class="code-text"><span class="red-text">NIGHT_EMBARGO</span> {null}</span> - 
+	ознака того, що це повідомлення повинно бути експортоване вночі.</li>
+	<li><span class="code-text"><span class="red-text">COPYRIGHT</span> {ІМ'Я_АВТОРА}</span> - 
+	ознака з вказівкою до авторських прав на повідомлення.</li>
+	<li><span class="code-text"><span class="red-text">CORRUPTED_AND_RESTORED</span> {null}</span> - 
+	ознака того, що повідомлення було пошкоджено та відновлено системою.</li>
+	<li><span class="code-text"><span class="red-text">CORRUPTED_AND_LOST</span> {null}</span> - 
+	ознака того, що повідомлення було пошкоджено та втрачено остаточно.</li>
+	<li><span class="code-text"><span class="red-text">RELOCATED</span> {СТАРИЙ_НАПРЯМОК}</span> - 
+	повідомлення було перенесено на інший напрямок у зв'язку з видаленям напрямку.</li>
+</ul>
+
+На етапі завантаження модулів імпорту або експорту система сама реєструє нові типи ознак які вказують на модуль. 
+Наприклад, тип ознаки <span class="code-text"><span class="red-text">IMPORT_PLAIN</span></span>, який вказує 
+на те, що повідомлення було імпортовано у систему за допомогою цього модуля.<br/>
+<br/>
+
+Поля класу <span class="code-text">MessageProperty</span>:
+<ul>
+	<li><span class="code-text">TYPE <span class="green-text">[String]</span></span> - 
+  тип системної ознаки.</li>
+  <li><span class="code-text">USER <span class="green-text">[String]</span></span> - 
+  ім'я користувача, який створив цю ознаку.</li>
+  <li><span class="code-text">TEXT_MESSAGE <span class="green-text">[String]</span></span> - 
+  зміст ознаки..</li>
+  <li><span class="code-text">DATE <span class="green-text">[String]</span></span> - 
+  дата та час створення ознаки..</li>
+</ul>
+
+Системні ознаки закріпляються за повідомленням, та використовують спеціальний формат для запису у 
+текстовому виді. У загальному випадку, цей формат має такий вигляд:<br/>
+
+<pre class="code-frame">
+ТИП,{КОРИСТУВАЧ},{ПОВІДОМЛЕННЯ},ДАТА_І_ЧАС
+</pre>
+
+Системні ознаки записуються у зону ігнорування коми і розділяються між собою за допомогою символу 
+<span class="red-text">$</span>. 
+Приклад системних ознак записаних у текстовому вигляді.
+
+<pre class="code-frame">
+{IMPORT_PLAIN,{root},{033bd94b1168d7e4f0d644c3c95e35bf},12:00:55 18.05.2013<span class="red-text">$</span>COPYRIGHT,{root},{Непочатов С.И.},12:00:55 18.05.2013}
+</pre>
+
+</div>
+</body>
+</html>

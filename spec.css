@@ -1,0 +1,95 @@
+/**
+Specs pages CSS main file.
+**/
+
+/** Body style override **/
+body {
+  background-color: #cbcbcb;
+  margin: 12pt;
+}
+
+/** Main header style class **/
+.m-header{
+  text-align: center;
+	font-weight: bold;
+	font-size: 22pt;
+	font-family: "PT Sans", "Liberation Sans", "Tahoma", sans-serif;
+	background-color: #5990d9;
+ 	color: #ffffff;
+}
+
+/** Ordinary header style class **/
+.header{
+	font-weight: bold;
+	font-size: 16pt;
+	font-family: "PT Sans", "Liberation Sans", "Tahoma", sans-serif;
+}
+
+/** Main text style class **/
+.main{
+	font-size: 12pt;
+	font-family: "PT Serif", "Liberation Serif", "Times New Roman", serif;
+  text-align: justify;
+}
+
+/** Bold text style class **/
+.strong{
+  font-weight: bold;
+}
+
+/** Italic text style class **/
+.select {
+	font-style: italic;
+}
+
+/** Red text **/
+.red-text {
+	color: #b30000;
+}
+
+/** Green text **/
+.green-text {
+  color: #0c5602;
+}
+
+/** Blue text **/
+.blue-text {
+  color: #0048b3;
+}
+
+/** Sign text below pictures in tables **/
+.picture-sign {
+	text-align: center;
+	font-style: italic;
+	font-size: 12pt;
+	font-family: "Arial", "Verbana", sans-serif;
+}
+
+/** Code class style **/
+.code-frame {
+  color: #0e013e;
+  border: 1px solid #383838;
+  border-radius: 5px;
+  padding: 5px 5px 5px;
+	font-size: 11pt;
+	font-family: monospace;
+	font-weight: bold;
+	background-color: #a4a4a4;
+}
+
+/** Code in text **/
+.code-text {
+  color: #0e013e;
+  font-size: 11pt;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+/** Code in text style (italic) **/
+.code-select {
+  color: #0e013e;
+  font-style: italic;
+  font-size: 11pt;
+  font-family: monospace;
+  font-weight: bold;
+}
