@@ -368,16 +368,16 @@
 <span class="header">Статуси та спеціальні команди <span class="red-text">[SPECIAL]</span></span>
 <br/>
 <br/>
-<span class="code-text"><span class="red-text">[R0]</span> OK:</span> - статус вдалого виконання попередньої команди.<br/>
-<span class="code-text"><span class="red-text">[R1]</span> PROCEED:</span> - статус-команда з вимогою продовжити надсилати команди чи дані до сервера.<br/>
-<span class="code-text"><span class="red-text">[R2]</span> RIBBON_ERROR:<span class="green-text">ТЕКСТ_ПОМИЛКИ</span></span> - повідомлення про помилку 
+<span class="code-text">OK:</span> - статус вдалого виконання попередньої команди.<br/>
+<span class="code-text">PROCEED:</span> - статус-команда з вимогою продовжити надсилати команди чи дані до сервера.<br/>
+<span class="code-text">RIBBON_ERROR:<span class="green-text">ТЕКСТ_ПОМИЛКИ</span></span> - повідомлення про помилку 
 виконання попередньої команди. У такому випадку сервер надає детальне текстове повідомлення щодо суті помилки. Клієнтська програма повинна повідомити 
 користувача.<br/>
-<span class="code-text"><span class="red-text">[R3]</span> END:</span> - команда завершення прийому багатострокової черги команд або даних.<br/>
-<span class="code-text"><span class="red-text">[R4]</span> COMMIT_CLOSE:</span> - команда яка підтверджує завершення з’єднання.<br/>
-<span class="code-text"><span class="red-text">[C0]</span> RIBBON_GCTL_SET_STATUS:<span class="green-text">СТАТУС</span></span> - команда 
+<span class="code-text">END:</span> - команда завершення прийому багатострокової черги команд або даних.<br/>
+<span class="code-text">COMMIT_CLOSE:</span> - команда яка підтверджує завершення з’єднання.<br/>
+<span class="code-text">RIBBON_GCTL_SET_STATUS:<span class="green-text">СТАТУС</span></span> - команда 
 яка повідомляє клієнтській програмі статус сервера системи.<br/>
-<span class="code-text"><span class="red-text">[C1]</span> RIBBON_GCTL_FORCE_LOGIN:</span> - команда з вимогою до програми провести аутентифікацію користувача. 
+<span class="code-text">RIBBON_GCTL_FORCE_LOGIN:</span> - команда з вимогою до програми провести аутентифікацію користувача. 
 Незалежно від реалізації програма повинна запитати логін та пароль користувача.<br/>
 <br/>
 
@@ -385,39 +385,39 @@
 <span class="header">Команди керування з’єднанням <span class="red-text">[LEVEL_0]</span></span>
 <br/>
 <br/>
-<span class="code-text"><span class="red-text">[00]</span> RIBBON_NCTL_INIT:<span class="green-text">ТИП_З’ЄДНАННЯ,ВЕРСІЯ_ПРОТОКОЛУ,ІД_КОДУВАННЯ</span></span> - 
+<span class="code-text">RIBBON_NCTL_INIT:<span class="green-text">ТИП_З’ЄДНАННЯ,ВЕРСІЯ_ПРОТОКОЛУ,ІД_КОДУВАННЯ</span></span> - 
 команда з вимогою прийняти з’єднання та закріпити тип клієнтської програми. Сервер може приймати такі типи як: 
 <span class="code-text"><span class="green-text">CLIENT</span></span> 
 (клієнтська програма простого користувача) та <span class="code-text"><span class="green-text">CONTROL</span></span> 
 (консоль адміністратора для контролю над системою).<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[01]</span> RIBBON_NCTL_LOGIN:<span class="green-text">{ЛОГІН},ПАРОЛЬ</span></span> - команда з вимогою 
+<span class="code-text">RIBBON_NCTL_LOGIN:<span class="green-text">{ЛОГІН},ПАРОЛЬ</span></span> - команда з вимогою 
 зареєструвати користувача у системі. У випадку вдалого виконання повертає <span class="code-text">OK:<span class="green-text">ІД_СЕСІЇ</span></span> 
 (якщо на сервері увімкнено сесії; див. розділ <span class="strong">"Побудування системи та її запуск"</span>).<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[02]</span> RIBBON_NCTL_GET_ID:</span> - команда з вимогою повернути ідентифікатор сесії. У випадку вдалого виконання повертає 
+<span class="code-text">RIBBON_NCTL_GET_ID:</span> - команда з вимогою повернути ідентифікатор сесії. У випадку вдалого виконання повертає 
 <span class="code-text">OK:<span class="green-text">ІД_СЕСІЇ</span></span> 
 (якщо на сервері увімкнено сесії; див. розділ <span class="strong">"Побудування системи та її запуск"</span>).<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[03]</span> RIBBON_NCTL_RESUME:<span class="green-text">ІД_СЕСІЇ</span></span> - команда з вимогою поновити 
+<span class="code-text">RIBBON_NCTL_RESUME:<span class="green-text">ІД_СЕСІЇ</span></span> - команда з вимогою поновити 
 сесію користувача, використовуючи ідентифікатор сесії. У такому разі сесія буде відновлена без 
 надання логіну чи паролю. Якщо відновлення сесії не вдалося, то сервер поверне <span class="code-text">RIBBON_GCTL_FORCE_LOGIN:</span> 
 замість <span class="code-text">OK:</span>.<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[04]</span> RIBBON_NCTL_REM_LOGIN:<span class="green-text">{ЛОГІН},ПАРОЛЬ</span></span> - команда з 
+<span class="code-text">RIBBON_NCTL_REM_LOGIN:<span class="green-text">{ЛОГІН},ПАРОЛЬ</span></span> - команда з 
 вимогою провести процедуру аутентифікації користувача без зміни даних поточної сесії. Для вдалого виконання видалений режим на поточному з’єднанні 
 повинен бути увімкнений (див. нижче).<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[05]</span> RIBBON_NCTL_GET_USERNAME:</span> - повернути логін користувача. У випадку вдалого виконання повертає 
+<span class="code-text">RIBBON_NCTL_GET_USERNAME:</span> - повернути логін користувача. У випадку вдалого виконання повертає 
 <span class="code-text">OK:<span class="green-text">ІМ’Я_КОРИСТУВАЧА,{ГРУПА_1,ГРУПА_2}</span></span>.<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[06]</span> RIBBON_NCTL_SET_REMOTE_MODE:<span class="green-text">ЧИСЛО</span></span> - 
+<span class="code-text">RIBBON_NCTL_SET_REMOTE_MODE:<span class="green-text">ЧИСЛО</span></span> - 
 увімкнути/вимкнути видалений режим для поточного з’єднання. 
 Аргумент <span class="green-text">0</span> вимикає видалений режим, <span class="green-text">1</span> - вмикає. 
 При вдалому виконанні повертає <span class="code-text">OK:<span class="green-text">ЧИСЛО</span></span>, де 
@@ -426,14 +426,14 @@
 не може бути активований пересічним користувачем. Див. розділ <span class="strong">"Побудування системи та її запуск"</span>.<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[07]</span> RIBBON_NCTL_ACCESS_CONTEXT:<span class="green-text">{ІМ’Я_КОРИСТУВАЧА}</span></span> - 
+<span class="code-text">RIBBON_NCTL_ACCESS_CONTEXT:<span class="green-text">{ІМ’Я_КОРИСТУВАЧА}</span></span> - 
 змінити контекст виконання наступної команди. У випадку вдалого виконання сервер змінить контекст доступу поточної сесії та поверне 
 <span class="code-text">PROCEED:</span>. Наступна команда буде виконана з правами вказаного користувача. 
 <span class="strong">Для вдалого виконання цієї команди видалений режим повинен бути активований на поточному 
 з'єднанні <span class="select">(див. віще)</span></span>.<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[08]</span> RIBBON_NCTL_CLOSE:</span> - закрити поточну сесію. 
+<span class="code-text">RIBBON_NCTL_CLOSE:</span> - закрити поточну сесію. 
 Завжди повертає <span class="code-text">COMMIT_CLOSE:</span> та закриває з’єднання. Після цієї команди потрібно 
 знову створити мережеве з’єднання до сервера.<br/>
 <br/>
@@ -441,19 +441,19 @@
 <span class="header">Базові команди <span class="red-text">[LEVEL_1]</span></span><br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[10]</span> RIBBON_GET_DIRS:</span> - отримати лист напрямків системи. 
+<span class="code-text">RIBBON_GET_DIRS:</span> - отримати лист напрямків системи. 
 У відповідь система повертає чергу з команд <span class="code-text">RIBBON_UCTL_LOAD_DIR:</span> 
 (<span class="select">див. нижче розділ про команди <span class="red-text">[LEVEL_3]</span></span>) 
 і <span class="code-text">END:</span> у кінці.<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[11]</span> RIBBON_GET_TAGS:</span> - отримати лист тегів системи. 
+<span class="code-text">RIBBON_GET_TAGS:</span> - отримати лист тегів системи. 
 У відповідь система повертає чергу з команд <span class="code-text">RIBBON_UCTL_LOAD_TAG:</span> 
 (<span class="select">див. нижче розділ про команди <span class="red-text">[LEVEL_3]</span></span>) 
 і <span class="code-text">END:</span> у кінці.<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[12]</span> RIBBON_LOAD_BASE_FROM_INDEX:<span class="green-text">ІНДЕКС</span></span> - 
+<span class="code-text">RIBBON_LOAD_BASE_FROM_INDEX:<span class="green-text">ІНДЕКС</span></span> - 
 завантажити базу повідомлень починаючи з зазначеного індексу. Якщо вказати замість індексу <span class="green-text">0</span>, 
 то система поверне всю базу повідомлень. 
 У відповідь система повертає чергу команд <span class="code-text">RIBBON_UCTL_LOAD_INDEX:</span> 
@@ -461,8 +461,7 @@
 <span class="code-text">END:</span> у кінці.<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[13]</span>
-RIBBON_POST_MESSAGE:<span class="green-text">ІНДЕКС_ПРАЩУРА,[НАПР_1,НАПР_2],МОВА,{Заголовок},[ТЕГ_1,ТЕГ_2],{ОЗНАКИ_ПОВІДОМЛЕННЯ} 
+<span class="code-text">RIBBON_POST_MESSAGE:<span class="green-text">ІНДЕКС_ПРАЩУРА,[НАПР_1,НАПР_2],МОВА,{Заголовок},[ТЕГ_1,ТЕГ_2],{ОЗНАКИ_ПОВІДОМЛЕННЯ} 
 + ТЕКСТ_ПОВІДОМЛЕННЯ</span> + END:</span> - випустити повідомлення у систему за листом напрямків. При вдалому виконанні 
 повертає OK, після цього сервер запускає широкомовну команду <span class="code-text">RIBBON_UCTL_LOAD_INDEX:</span> 
 (<span class="select">див. нижче розділ про команди <span class="red-text">[LEVEL_3]</span></span>). 
@@ -470,14 +469,22 @@ RIBBON_POST_MESSAGE:<span class="green-text">ІНДЕКС_ПРАЩУРА,[НАП
 <span class="code-text">END:</span> необхідна для завершення прийому даних для команди.<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[14]</span> RIBBON_GET_MESSAGE:
+<span class="code-text">RIBBON_POST_MESSAGE_BY_PSEUDO:<span class="green-text">{ПСЕВДОНАПРЯМОК},МОВА,{Заголовок},[ТЕГ_1,ТЕГ_2],{ОЗНАКИ_ПОВІДОМЛЕННЯ} 
++ ТЕКСТ_ПОВІДОМЛЕННЯ</span> + END:</span> - випустити повідомлення у систему за кодом псевдонапрямку. При вдалому виконанні 
+повертає OK, після цього сервер запускає широкомовну команду <span class="code-text">RIBBON_UCTL_LOAD_INDEX:</span> 
+(<span class="select">див. нижче розділ про команди <span class="red-text">[LEVEL_3]</span></span>). 
+Ця команда використовує багаторядкову форму: команда 
+<span class="code-text">END:</span> необхідна для завершення прийому даних для команди.<br/>
+<span class="strong">Зауваження:</span> видалений режим повинен бути увімкнено!<br/>
+<br/>
+
+<span class="code-text">RIBBON_GET_MESSAGE:
 <span class="green-text">НАПРЯМОК,ІНДЕКС</span></span> - отримати текст повідомлення. Сервер перевіряє доступ до 
 повідомлення і рядками повертає текст повідомлення, завершуючи <span class="code-text">END:</span>.<br/>
 <br/>
 
 
 <span class="code-text">
-<span class="red-text">[15]</span> 
 RIBBON_MODIFY_MESSAGE:<span class="green-text">ІНДЕКС,[НАПР_1,НАПР_2],МОВА,{Заголовок},[ТЕГ_1,ТЕГ_2],{ОЗНАКИ_ПОВІДОМЛЕННЯ} 
 + ЗМІНЕНИЙ_ТЕКСТ</span> + END:</span> - редагувати існуюче повідомлення у системі за індексом. 
 Цією командою можна змінити практично всі дані у повідомлені окрім індексу у базі. 
@@ -490,25 +497,25 @@ RIBBON_MODIFY_MESSAGE:<span class="green-text">ІНДЕКС,[НАПР_1,НАПР
 <span class="code-text">END:</span> необхідна для завершення прийому даних для команди.<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[16]</span> RIBBON_DELETE_MESSAGE:<span class="green-text">ІНДЕКС</span></span> 
+<span class="code-text">RIBBON_DELETE_MESSAGE:<span class="green-text">ІНДЕКС</span></span> 
 - видалити повідомлення з системи. Сервер видалить усі копії повідомлення за напрямків та поверне 
 <span class="code-text">OK:</span> разом з широкомовною командою 
 <span class="code-text">RIBBON_UCTL_DELETE_INDEX:</span> 
 (<span class="select">див. нижче розділ про команди <span class="red-text">[LEVEL_3]</span></span>).<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[17]</span> RIBBON_ADD_MESSAGE_PROPERTY:<span class="green-text">ІНДЕКС,ТИП_ОЗНАКИ,{ТЕКСТОВЕ_ПОВІДОМЛЕННЯ}</span></span> - додання системної ознаки у повідомлення. Для 
+<span class="code-text">RIBBON_ADD_MESSAGE_PROPERTY:<span class="green-text">ІНДЕКС,ТИП_ОЗНАКИ,{ТЕКСТОВЕ_ПОВІДОМЛЕННЯ}</span></span> - додання системної ознаки у повідомлення. Для 
 вдалого виконання система вимагає від користувача повний доступ до повідомлення. Повертає 
 <span class="code-text">OK:</span> та широкомовну команду <span class="code-text">RIBBON_UCTL_UPDATE_INDEX:</span>.<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[18]</span> RIBBON_DEL_MESSAGE_PROPERTY:<span class="green-text">ІНДЕКС,ТИП_ОЗНАКИ,{ДАТА}</span></span> - видалення системної ознаки з повідомлення. 
+<span class="code-text">RIBBON_DEL_MESSAGE_PROPERTY:<span class="green-text">ІНДЕКС,ТИП_ОЗНАКИ,{ДАТА}</span></span> - видалення системної ознаки з повідомлення. 
 Дата створення ознаки надається для ідентифікації ознаки. 
 Для вдалого виконання система вимагає від користувача повний доступ до повідомлення. Повертає 
 <span class="code-text">OK:</span> та широкомовну команду <span class="code-text">RIBBON_UCTL_UPDATE_INDEX:</span>.<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[19]</span> RIBBON_GET_USERS:</span> - отримати лист з даними 
+<span class="code-text"> RIBBON_GET_USERS:</span> - отримати лист з даними 
 користувачів системи (окрім користувачів групи ADM). Лист користувачів використовується для маніпуляцій з 
 авторськими правами. Сервер повертає CSV-рядки у вигляді 
 <span class="code-text"><span class="green-text">{ІМ'Я_КОРИСТУВАЧА},{КОМЕНТАР}</span></span> та 
@@ -525,13 +532,13 @@ RIBBON_MODIFY_MESSAGE:<span class="green-text">ІНДЕКС,[НАПР_1,НАПР
 <span class="header">Команди керування клієнтом <span class="red-text">[LEVEL_3]</span></span><br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[30]</span> 
+<span class="code-text">
 RIBBON_UCTL_LOAD_DIR:<span class="green-text">НАПРЯМОК,{КОМЕНТАР},[МОВА_1,МОВА_2],[ЛИСТ_ДОСТУПУ],[ЛИСТ_ЕКСПОРТУ]</span></span> - 
 додати новий напрямок у лист напрямків клієнтської програми. Нічого не повертає.<br/>
 <br/>
 
 
-<span class="code-text"><span class="red-text">[31]</span> 
+<span class="code-text">
 RIBBON_UCTL_UPDATE_DIR:<span class="green-text">СТАРИЙ_НАПРЯМОК,НАПРЯМОК,{КОМЕНТАР},[МОВА_1,МОВА_2],[ЛИСТ_ДОСТУПУ],[ЛИСТ_ЕКСПОРТУ]
 </span></span>- відновити дані старого напрямку у випадку змін.<br/>
 <br/> 
@@ -540,14 +547,14 @@ RIBBON_UCTL_UPDATE_DIR:<span class="green-text">СТАРИЙ_НАПРЯМОК,Н
 завантажити тег з листом його індексів до клієнтської програми.<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[33]</span> RIBBON_UCTL_LOAD_INDEX:<span class="green-text">ІНДЕКС,ІНДЕКС_ПРАЩУРА,[НАПР1,НАПР2],МОВА,{ЗАГОЛОВОК},ДАТА_ТА_ЧАС,{АВТОР_ОРИГІНАЛА},{АВТОР},[ТЕГ1,ТЕГ2,ТЕГ3],{СИСТЕМНІ_ОЗНАКИ}</span></span> - завантажити дані нового повідомлення у системі (без завантаження тексту повідомлення).<br/>
+<span class="code-text">RIBBON_UCTL_LOAD_INDEX:<span class="green-text">ІНДЕКС,ІНДЕКС_ПРАЩУРА,[НАПР1,НАПР2],МОВА,{ЗАГОЛОВОК},ДАТА_ТА_ЧАС,{АВТОР_ОРИГІНАЛА},{АВТОР},[ТЕГ1,ТЕГ2,ТЕГ3],{СИСТЕМНІ_ОЗНАКИ}</span></span> - завантажити дані нового повідомлення у системі (без завантаження тексту повідомлення).<br/>
 <br/>
 
 
-<span class="code-text"><span class="red-text">[34]</span> RIBBON_UCTL_UPDATE_INDEX:<span class="green-text">ІНДЕКС,ІНДЕКС_ПРАЩУРА,[НАПР1,НАПР2],МОВА,{ЗАГОЛОВОК},ДАТА_ТА_ЧАС,{АВТОР_ОРИГІНАЛА},{АВТОР},[ТЕГ1,ТЕГ2,ТЕГ3],{СИСТЕМНІ_ОЗНАКИ}</span></span> - оновити дані повідомлення у програмі (без завантаження тексту повідомлення).<br/>
+<span class="code-text">RIBBON_UCTL_UPDATE_INDEX:<span class="green-text">ІНДЕКС,ІНДЕКС_ПРАЩУРА,[НАПР1,НАПР2],МОВА,{ЗАГОЛОВОК},ДАТА_ТА_ЧАС,{АВТОР_ОРИГІНАЛА},{АВТОР},[ТЕГ1,ТЕГ2,ТЕГ3],{СИСТЕМНІ_ОЗНАКИ}</span></span> - оновити дані повідомлення у програмі (без завантаження тексту повідомлення).<br/>
 <br/>
 
-<span class="code-text"><span class="red-text">[35]</span> RIBBON_UCTL_DELETE_INDEX:<span class="green-text">ІНДЕКС</span></span>
+<span class="code-text">RIBBON_UCTL_DELETE_INDEX:<span class="green-text">ІНДЕКС</span></span>
  - вилучити дані про повідомлення з клієнтської програми.<br/>
 <br/>
 
