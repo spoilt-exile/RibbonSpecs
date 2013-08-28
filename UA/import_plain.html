@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>
+         Модуль імпорту простих текстових файлів (тип PLAIN)
+      </title>
+      <meta name="GENERATOR" content="Arachnophilia 5.5"/>
+      <meta name="FORMATTER" content="Arachnophilia 5.5"/>
+      <link REL="stylesheet" type="text/css" href="../spec.css">
+   </head>
+
+<body>
+<div align="center" class="m-header">Модуль імпорту простих текстових файлів (тип PLAIN)</div>
+<br/>
+<div class="main">
+<a href="_contents.html"><<<Назад</a>
+<br/>
+<br/>
+<span class="strong">Версія специфікації:</span> 1<br/>
+<span class="strong">Тип модулю:</span> <span class="code-text">PLAIN</span><br/>
+<span class="strong">Ознака модулю:</span> IMPORT_PLAIN<br/>
+<span class="strong">Проєкт:</span> ImportPlain<br/>
+
+<br/>
+<span class="header">Опис модуля</span><br/>
+<br/>
+Даний модуль використовуюється для імпорту простих текстових файлів з локальних тек чи примонтованих 
+мережевих тек. Модуль шукає у вказаної теці файли з вказаною маскою (без рекурсивного пошуку) і імпортує їх до системи. 
+Після вдалого імпорту, модуль вилучає файл з теки для запобігання повторного імпорту. Якщо файл неможливо вилучити, 
+модуль додає його у чорний список і перемикає систему у "брудний" режим. Також якщо модуль не может отримати доступ 
+за шляхом до вказаної теки, то він також перемкне систему у "брудний" режим. Випускаючи повідомлення, модуль 
+додає свою ознаку до повідомлення з унікальним ідентифікатором.
+<br/>
+<br/>
+
+
+<span class="header">Параметри модуля</span><br/>
+<br/>
+
+Список параметрів модулю (лише спецефічні для цього модуля):
+<!--
+  <li><span class="code-text">[<span class="green-text"></span>]</span> - 
+  ;</li>
+--->
+<ul>
+  <li><span class="code-text">plain_path [<span class="green-text">Рядок</span>]</span> - 
+  шлях до теки звідки буде прозводитись імпорт файлів;</li>
+  <li><span class="code-text">plain_mask [<span class="green-text">Рядок</span>]</span> - 
+  маска за якою будуть шукатись файли (*.txt наприклад);</li>
+  <li><span class="code-text"> plain_ignore_mask [<span class="green-text">Рядок</span>]</span> - 
+  маска файлів які будуть автоматично ігноруватись під час експорту (some???.txt наприклад). 
+  Повинна логічно не перекривати маску пошуку (не повинна бути *);</li>
+  <li><span class="code-text">plain_dir[<span class="green-text">Рядок</span>]</span> - 
+  вказує на напрямок випуску імпортованного повідомлення;</li>
+  <li><span class="code-text">plain_copyright_override [<span class="green-text">Рядок</span>]</span> - 
+  вказує нові авторські права при імпорті повідомлення;</li>
+</ul>
+
+
+Приклад конфігурації:
+<pre class="code-frame">
+import_type=PLAIN
+import_name=Test-stand
+import_print=033bd94b1168d7e4f0d644c3c95e35bf
+import_timeout=1
+plain_path=/mount/dc-1/messages
+plain_dir=Імпорт.PLAIN
+plain_mask=*
+plain_copyright_override=root
+opt_log=1
+</pre>
+<br/>
+
+
+<span class="header">Встановлення і запуск</span><br/>
+<ol>
+  <li>Завантажте цей модуль разом з усіма залежностями.</li>
+  <li>Скомпілюйте файл модуля за допомогою NetBeans.</li>
+  <li>Покладіть файл модулю у теку imports за шляхом де встановлено RibbonServer.</li>
+  <li>Відредагуйте файл example.import за своїм бажанням та перенесіть його до теки import у базу RibbonServer. При зміні назви
+  схеми потрібно змініти ще й назву файлу.</li>
+  <li>Переконайтеся, що користувач за яким запускається сервер має дозвіл на читання та запис за шляхом імпорту.</li>
+  <li>Перезавантажте сервер системи.</li>
+</ol>
+<br/>
+
+
+
+
+</div>
+</body>
+</html>
