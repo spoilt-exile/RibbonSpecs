@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- Created on 28 серп 2013 21:21:36 -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>
+         Модуль експорту простих текстових файлів (тип PLAIN)
+      </title>
+      <meta name="GENERATOR" content="Arachnophilia 5.5"/>
+      <meta name="FORMATTER" content="Arachnophilia 5.5"/>
+      <link REL="stylesheet" type="text/css" href="../spec.css">
+   </head>
+
+<body>
+<div align="center" class="m-header">Модуль експорту простих текстових файлів (тип PLAIN)</div>
+<br/>
+<div class="main">
+<a href="_contents.html"><<<Назад</a>
+<br/>
+<br/>
+<span class="strong">Версія специфікації:</span> 1<br/>
+<span class="strong">Тип модулю:</span> <span class="code-text">PLAIN</span><br/>
+<span class="strong">Ознака модулю:</span> EXPORT_PLAIN<br/>
+<span class="strong">Проєкт:</span> ExportPlain<br/>
+
+<br/>
+<span class="header">Опис модуля</span><br/>
+<br/>
+Модуль експортує текстовий файл у локальну теку, чи у примонтовану мережеву теку у вигляді 
+простого текстового файлу. Модуль здатен використовувати шаблони і з їх допомогою можна виводити 
+навіть HTML файли (без валідації). Модуль не підтримує самостійне виправлення у випавдку помилки.
+<br/>
+<br/>
+
+
+<span class="header">Параметри модуля</span><br/>
+<br/>
+
+Список параметрів модулю (лише спецефічні для цього модуля):
+<!--
+  <li><span class="code-text">[<span class="green-text"></span>]</span> - 
+  ;</li>
+--->
+<ul>
+  <li><span class="code-text">plain_path [<span class="green-text">Рядок</span>]</span> - 
+  шлях до теки експорту;</li>
+  <li><span class="code-text">plain_nameing [<span class="green-text">Перечислення</span>]</span> - 
+  визначає засіб іменування файлу повідомлення. Значення: <span class="code-text">INDEX</span> (назва файлу за індексом у базі системи), 
+  <span class="code-text">HEADER</span> (назва файлу за заголовком повідомлення) і <span class="code-text">HASH</span> (назва файлу за 
+  хешем MD5 зі змісту повідомлення). За замовчуванням дорівнює <span class="code-text">HEADER</span>;</li>
+  <li><span class="code-text">plain_codepage [<span class="green-text">Рядок</span>]</span> - 
+  кодова сторінка, яка буде використовуватися для експорту повідомлення. За замовчування використовується UTF-8;</li>
+  <li><span class="code-text">plain_linefeed [<span class="green-text">Перечислення</span>]</span> - 
+  визначає символ переходу рядка. Значення: <span class="code-text">WIN</span> (перехід рядку у системах Windows) і 
+  <span class="code-text">NIX</span> (перехід рядку у системах *nix). За замовчуванням дорівнює <span class="code-text">NIX</span>;</li>
+</ul>
+
+
+Приклад конфігурації:
+<pre class="code-frame">
+export_type=PLAIN
+export_name=TEST
+export_print=033bd94b1168d7e4f0d644c3c95e35bf
+export_timeout=1
+export_template=/home/spoilt/РАБОТА [УКРИНФОРМ]/ribbon_base/export/TEST.template
+plain_path=/home/spoilt/РАБОТА [УКРИНФОРМ]/ЭКСПОРТ/PLAIN
+plain_naming=INDEX
+</pre>
+<br/>
+
+
+<span class="header">Встановлення і запуск</span><br/>
+
+<ol>
+  <li>Завантажте цей модуль разом з усіма залежностями.</li>
+  <li>Скомпілюйте файл модуля за допомогою NetBeans.</li>
+  <li>Покладіть файл модулю у теку exports за шляхом де встановлено RibbonServer.</li>
+  <li>Відредагуйте файл example.export за своїм бажанням та перенесіть його до теки export у базу RibbonServer. 
+  При зміні назви схеми потрібно змінити ще й назву файлу.</li>
+  <li>Переконайтеся, що користувач за яким запускається сервер має дозвіл на запис за шляхом експорту.</li>
+  <li>Відредагуйте потрібні вам напрямки вказавши назву схеми експорту.</li>
+  <li>Перезавантажте сервер Ribbon.</li>
+</ol>
+<br/>
+
+
+
+
+</div>
+</body>
+</html>
