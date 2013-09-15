@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- Created on 14 вер 2013 20:38:47 -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>
+         Ядро клієнтських програм
+      </title>
+      <meta name="GENERATOR" content="Arachnophilia 5.5"/>
+      <meta name="FORMATTER" content="Arachnophilia 5.5"/>
+      <link REL="stylesheet" type="text/css" href="../spec.css">
+   </head>
+
+<body>
+<div align="center" class="m-header">Ядро клієнтських програм</div>
+<br/>
+<div class="main">
+<a href="_contents.html"><<<Назад</a>
+<br/>
+<br/>
+
+<span class="header">Загальне</span><br/>
+<br/>
+Більша чистина програм системи залежить від бібліотеки ядра клієнтських програм, яка реалізована у рамках 
+проекту libRibbonIO. Ця бібліотека дозволяє уніфікувати роботу клієнтських програм.<br/>
+<br/>
+Ядро бере на себе такі задачі як: створення з'єднання, аутентифікація, обробка помилок і надсилання команд до системи. 
+Програма може це реалізовувати власними силами, але використання цієї бібліотеки значно скорочую час розробки.
+<br/>
+<br/>
+
+<span class="header">Початок використання</span>
+<br/>
+<br/>
+
+Для початку використання цієї бібліотеки слід додати <span class="green-text">libRibbonIO.jar</span> до 
+<span class="code-text">classpath</span> (чи додати проект libRibbonIO як бібліотеку у налаштуваннях проекту до
+NetBeans).<br/>
+<br/>
+Головним класом у бібліотеці є клас <span class="code-text">AppComponents.RibbonApplication</span>. Для початку роботи 
+клієнтської програми слід створити у головному класі поле з типом <span class="code-text">AppComponents.RibbonApplication</span> 
+і під час ініціалізації створити для нього новий екземпляр цього класу. Також можна створювати об'єкт одночасно зі створенням поля.<br/>
+
+<pre class="code-frame">
+public static AppComponents.RibbonApplication <span class="red-text">ClientApplication</span> = 
+	new AppComponents.RibbonApplication(<span class="green-text">"RibbonTest"</span>, <span class="green-text">"Тестова програма"</span>, AppComponents.RibbonApplication.ApplicationRole.<span class="green-text">CLEINT</span>);
+</pre>
+
+Конструктор цього класу приймає такі параметри: внутрішню назву програми (зазвичай назва проекту), локалізовану назву 
+програми і роль програми у системі (значення з переліку у 
+<span class="code-text">AppComponents.RibbonApplication.ApplicationRole</span>). Сервер системи поки що підтримує тільки дві ролі: 
+клієнт (<span class="code-text"><span class="green-text">CLIENT</span></span>) і контроль 
+(<span class="code-text"><span class="green-text">CONTROL</span></span>). Клієнт має звичайні права при роботі з сервером. 
+Контроль має право змінювати налаштування сервера, створювати, редагувати і видаляти напрямки, схеми імпорту та експорту, користувачів і інше.<br/>
+<br/>
+
+При першому запуску, ядро створює нову теку типу <span class="green-text">.Ribbon</span> де мають зберігатись налаштування 
+усіх програм які використовують цю бібліотеку. Ядро також має свої налаштування і зберігає їх у файлі 
+<span class="green-text">RibbonApplication.properties</span>. Під час запуску, ядро створює (або використовує існуючий) файл 
+журналу для поточної програми і зчитує глобальні налаштування.<br/>
+<br/>
+
+
+Для уникнення конфліктів імен у теці налаштувань, ядро використовує свій механізм іменування файлів, які належать до однієї 
+з програм. Клас RibbonApplication реалізує готові методи для роботи з налаштуваннями (поки що лише типу properties): 
+<span class="code-text">getProperties()</span> і <span class="code-text">storeProperties()</span>. Перший допомагає отримати 
+зміст файлу налаштування чи одразу створити його і одразу зчитати, якщо його не існує. Другий метод допомогає записувати 
+налаштування. Ядро динамічно надає імена файлам на основі ім'я програми і наданого ім'я. Для динамічного створення нових імен файлів 
+створено приватний метод <span class="code-text">renderAppFilename()</span>. Якщо надати цьому методу таке значення як 
+<span class="strong">"TestFile"</span> (і якщо ім'я програми буде <span class="strong">RibbonTest</span>), то він поверне 
+<span class="strong">"RibbonTest.TestFile"</span>.<br/>
+<br/>
+
+
+<span class="header">Журналізація роботи програми</span>
+<br/>
+<br/>
+
+Для уніфікації систем журналювання, ядро системи містить також метод для ведення журналу програми. Метод 
+<span class="code-text">log()</span> можна використовувати для налагодження програми і інформування користувача 
+про помилку у роботі. Метод приймає параметр рівня повідомлення і саме повідомлення. 
+Рівень повідомлення - це ціле значення від 0 до 3 яке показує важливість цього повідомлення: 3 - просте повідомлення (налагодження), 
+2 - попередження (небезпечна операція), 1 - помилка (програма може поновити свою роботу самостійно) і 0 - критична помилка 
+(зазвичай програма завершує роботу).<br/>
+<br/>
+
+Приклад використання:<br/>
+<pre class="code-frame">
+ClientApplication.log(3, <span class="green-text">"тестове повідомлення"</span>);
+</pre>
+
+Після використання цього методу у журналі з'явиться такий текст:<br/>
+<pre class="code-frame">
+17:36:22 05.09.2013 [RibbonTest] повідомлення: 'тестове повідомлення';
+</pre>
+
+<br/>
+<span class="header">З’єднання з сервером</span><br/>
+<br/>
+Ядро системи не намагається з’єднатись з сервером системи автоматично, надаючи 
+цей обов’язок клієнтській програмі. Коли програмі потрібно надіслати якусь 
+команду до сервера, вона спочатку викликає метод <span class="code-text">connect()</span> у об’єкті ядра. 
+У параметрах цього метода передається клас для обробки команд з серверу і клас-потік який буде виконано після 
+вдалого з’єднання.<br/>
+<br/>
+
+Клієнтська програма може надавати свій клас для обробки команд сервера, який успадковує 
+клас бібліотеки <span class="code-text">AppComponents.NetWorker</span>. Цей клас відповідає 
+за створення з’єднання та взаємодію з сервером. Для мінімальної функціональності клієнтська програма 
+має у власному класу-нащадку переписати метод <span class="code-text">getProtocol()</span> (повертає 
+масив об’єктів для обробки команд) і конструктор класу.<br/>
+<br/>
+
+Приклад класу для обробки команд сервера:<br/>
+<pre class="code-frame">
+public class MyWorker extends AppComponents.NetWorker {
+  
+  <span class="blue-text">//Конструктор класу</span>
+  public MyWorker(AppComponents.RibbonApplication givenApp) {
+    super(givenApp);
+  }
+  
+  <span class="blue-text">//Метод отримання слухачів протоколу</span>
+  <span class="red-text">@Override</span>
+  public AppComponents.Listener[] getProtocol() {
+    return new AppComponents.Listener[] {
+      
+      <span class="blue-text">//Новий слухач команди COMMAND1</span>
+      new AppComponents.Listener(<span class="green-text">"COMMAND1"</span>) {
+        
+        <span class="blue-text">//Метод який слухач виконує при отриманні цієї команди</span>
+        <span class="red-text">@Override</span>
+        public void exec(String args) {
+          currentApplication.log(3, <span class="green-text">"отримана команда "</span> + 
+          	this.<span class="green-text">COMM_NAME</span>);
+        }
+      }
+    }
+  }
+}
+</pre>
+
+Об’єкти обробники команд це екземпляри анонімного класу, який успадковує абстрактний клас
+<span class="code-text">AppComponents.Listener</span>. Кожний обробник обробляє одну команду 
+протоколу. При отриманні команди від сервера, викликається метод <span class="code-text">NetWorker.exec()</span>, 
+який шукає відповідний обробник для команди і запускає його внутрішній метод <span class="code-text">exec()</span> 
+з аргументами отриманими з команди.<br/>
+<br/>
+
+Приклад виклику методу <span class="code-text">connect()</span>:
+<pre class="code-frame">
+ClientApplication.connect(MyWorker<span class="red-text">.class</span>, new Runnable() {
+  
+  <span class="red-text">@Override</span>
+  public void run() {
+    ClientApplication.someMethod();
+  }
+});
+</pre>
+
+
+Метод <span class="code-text">connect()</span> ініціює з’єднання з сервером, використовуючи глобальні налаштування ядра 
+(адреса сервера, порт, останній логін і останній номер сесії). Спочатку він намагається використовувати номер сесії 
+(якщо це увімкнено у налаштуваннях), і якщо не виходить, то створю вікно логіну у систему. Вікно логіну дозволяє ввести 
+логін і пароль користувача, а також змінювати налаштування з’єднання. Якщо програма не може зв’язатись з сервером, то 
+діалог дозволить змінити параметри з’єднання та спробувати знову.<br/>
+<br/>
+
+Після вдалого з’єднання, ядро запускає клас-потік переданий раніше і знімає блокування. <span class="strong">Потрібно знати, 
+що цей метод є блокуючим, тому його виклик у потоку інтерфейсу може заблокувати роботу програми, тому слід запускати цей метод 
+з іншого потоку.</span><br/>
+<br/>
+
+<span class="header">Глобальна конфігурація</span><br/>
+<br/>
+
+Файл глобальної конфігурації використовується ядром клієнтських програм для початкової ініціалізації з’єднання і спроби автоматичного 
+логіну.<br/>
+<br/>
+
+Параметри глобального налаштування:
+<ul>
+  <li><span class="code-text">server_address [<span class="green-text">IP-адреса</span>]</span> 
+  - адреса сервера системи.</li>
+  <li><span class="code-text">server_port [<span class="green-text">Ціле</span>]</span> 
+  - мережевий порт який слухає сервер (від 1 до 65535).</li>
+  <li><span class="code-text">remember_session [<span class="green-text">Булеве</span>]</span> 
+  - вказує чи потрібно використовувати ідентифікатор сесії для логіну (0 чи 1).</li>
+  <li><span class="code-text">session_login [<span class="green-text">Рядок</span>]</span> 
+  - ім’я користувача який востаннє входив до системи.</li>
+  <li><span class="code-text">session_id [<span class="green-text">Рядок</span>]</span> 
+  - ідентифікатор останньої сесії.</li>
+</ul>
+
+Слід зауважити, що клієнтська програма технічно може читати та записувати файл глобальної конфігурації власними силами, 
+однак це не рекомендується.
+
+</div>
+</body>
+</html>
