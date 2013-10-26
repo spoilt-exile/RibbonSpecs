@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>
+         Обробник телепрограми
+      </title>
+      <meta name="GENERATOR" content="Arachnophilia 5.5"/>
+      <meta name="FORMATTER" content="Arachnophilia 5.5"/>
+      <link REL="stylesheet" type="text/css" href="../spec.css">
+   </head>
+
+<body>
+<div align="center" class="m-header">Обробник телепрограми</div>
+<br/>
+<div class="main">
+<a href="_contents.html"><<<Назад</a>
+<br/>
+<br/>
+<span class="main">
+
+<div align="center">
+<img src="pics/app_jtvprog.jpg" width="656" height="438" title="" alt=""/><br/><br/>
+<span class="picture-sign">Інтерфейс програми</span>
+</div>
+
+
+<br/>
+<br/>
+<span class="strong">Загальний опис:</span><br/>
+Утиліта обробки тексту телепрограми. Дозволяє ввести тест програми по каналах і отримати текст по днях. 
+Додаткова можливість: випуск тексту телепрограми до системи "Стрічка".
+
+<br/>
+<br/>
+<span class="strong">Список залежностей:</span><br/>
+<ul>
+  <li>libRibbonApp - бібліотека ядра програми;</li>
+  <li>libRibbonData - бібліотека структур даних;</li>
+</ul>
+
+<span class="header">Налаштування</span>
+<br/>
+<br/>
+Утиліта зберігає окремий файл <span class="green-text">RibbonTVProg.Release.properties</span> для налаштувань з’єднання до системи "Стрічка". Цей 
+файл зберігається разом з глобальним конфігураційним файлом.<br/>
+<br/>
+
+Параметри у файлі <span class="green-text">RibbonTVProg.Release.properties</span>:
+
+<!--
+  <li><span class="code-text">[<span class="green-text"></span>]</span> - 
+  ;</li>
+--->
+<ul>
+  <li><span class="code-text">release_channel[<span class="green-text">Булеве</span>]</span> - 
+  вмикач випуску тексту програми по каналах;</li>
+  <li><span class="code-text">release_chn_dir[<span class="green-text">Рядок</span>]</span> - 
+  напрямок системи на який буде випускатись текст по каналах;</li>
+  <li><span class="code-text">release_day[<span class="green-text">Булеве</span>]</span> - 
+  вмикач випуск тексту програми по днях;</li>
+  <li><span class="code-text">release_day_dir[<span class="green-text">Рядок</span>]</span> - 
+  напрямок системи на який буде випускатись текст по днях;</li>
+  <li><span class="code-text">release_aloow_incomplete[<span class="green-text">Булеве</span>]</span> - 
+  вмикач випуску неповного тексту;</li>
+</ul>
+
+Приклад файлу конфігурації:
+
+<pre class="code-frame">
+release_day_dir=[ТВ.Дні]
+release_chn_dir=[ТВ.Канали]
+release_channel=true
+release_aloow_incomplete=false
+release_day=true
+</pre>
+
+Також програма у своєї робочої теці зберігає свій службовий файл <span class="green-text">tvSet.properties</span> зі 
+списком каналів для перевірки.
+
+</span>
+</body>
+</html>
