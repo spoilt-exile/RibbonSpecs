@@ -85,7 +85,11 @@
 Система у такому випадку просто поверне цю ж саму строку без фігурних лапок для самостійного парсингу.
 <br/>
 <br/>
-Для роботи з CSV створено два класи: <span class="code-text">CsvElder</span> та <span class="code-text">CsvFormat</span>. 
+Система працює з даними у форматі CSV за допомогою бібліотеки <span class="green-text">libRibbonData</span>, 
+яка містить у себе класи для роботи з форматом і класи самих структур даних. Надалі, усі класи (окрім означених) 
+містяться у бібліотеці.<br/>
+<br/>
+Для роботи з форматом створено два класи: <span class="code-text">CsvElder</span> та <span class="code-text">CsvFormat</span>. 
 Абстрактний клас <span class="code-text">CsvElder</span> є пращуром усіх інших системних структур даних. 
 Він містить поля та методи для роботи з форматом та допомагає відтворювати структури з CSV-формату, та 
 перетворювати їх у CSV-строку.<br/>
@@ -170,7 +174,7 @@
 <br/>
 Псевдонапрямки представлені у системі класом <span class="code-text">PseudoDirEntry</span>. 
 Екземпляр цього класу містить назву псевдонапрямку, коментар та лист напрямків системи на який 
-він посилається.
+він посилається. <span class="red-text">Класс <span class="code-text">PseudoDirEntry</span> містеться лише у програмі RibbonServer.</span>
 <br/>
 
 <br/>
@@ -312,6 +316,76 @@
 <pre class="code-frame">
 {IMPORT_PLAIN,{root},{033bd94b1168d7e4f0d644c3c95e35bf},12:00:55 18.05.2013<span class="red-text">$</span>COPYRIGHT,{root},{Непочатов С.И.},12:00:55 18.05.2013}
 </pre>
+
+<br/>
+<span class="header">Користувачі і групи</span><br/>
+<br/>
+Об’єкти користувачів і груп користувачів реалізовані у системі класами <span class="code-text">UserEntry</span> і <span class="code-text">GroupEntry</span>. 
+Екземпляр классу <span class="code-text">UserEntry</span> містить дані одного користувача системи і містить такі поля як:<br/>
+<ul>
+  <li><span class="code-text">USER_NAME <span class="green-text">[String]</span></span> 
+  - ім’я користувача у системі;</li>
+  <li><span class="code-text">H_PASSWORD <span class="green-text">[String]</span></span> 
+  - md5-хеш пароля користувача;</li>
+  <li><span class="code-text">COMM <span class="green-text">[String]</span></span> 
+  - опис користувача (телефон, адреса, відділ тощо);</li>
+  <li><span class="code-text">GROUPS <span class="green-text">[Array:String]</span></span> 
+  - масив з іменами груп, у яких рахується поточний користувач;</li>
+  <li><span class="code-text">IS_ENABLED <span class="green-text">[Boolean]</span></span> 
+  - ознака того, що користувач увімкненний (перевіряється під час логіну);</li>
+</ul>
+
+Вигляд запису користувача у форматі CSV:
+<pre class="code-frame">
+{ЛОГІН},{КОМЕНТАР},[ГРУПА1,ГРУПА2],ХЕШ-ПАРОЛЬ,ОЗНАКА_УВІМКНЕННЯ
+</pre>
+
+Приклад запису користувача:
+<pre class="code-frame">
+{test},{Test user, pass: test},[test],098f6bcd4621d373cade4e832627b4f6,1
+</pre>
+
+
+Об’єкт класу <span class="code-text">GroupEntry</span> містить лише загальні дані групи користувачів і містить такі поля як:
+<ul>
+  <li><span class="code-text">GROUP_NAME <span class="green-text">[String]</span></span> 
+  - ім’я групи користувачів у системі;</li>
+  <li><span class="code-text">COMM <span class="green-text">[String]</span></span> 
+  - опис групи;</li>
+</ul>
+
+Вигляд запису групи у форматі CSV:
+<pre class="code-frame">
+{ГРУПА},{КОМЕНТАР}
+</pre>
+
+Приклад запису групи:
+<pre class="code-frame">
+{test},{Test group}
+</pre>
+
+<br/>
+<span class="header">Сесії</span><br/>
+<br/>
+Сесія це об’єкт мережевою системи сервера, який дозволяє входити до системи без передачі паролю чи логіну. Якщо на сервері увімкнено сесії, то 
+користувач при першому вході до системи отримає унікальний ідентефікатор сесії. Цей ідентифікатор можна використовувати для подальшого входу без логіну и паролю. 
+Користувач повинен лише надати ідентифікатор сесії. Якщо наданий ідентифікатор знайдено у списку сесій, то система дозволить користувачу увійти 
+(<span class="strong">див. розділ "Мережевий протокол"</span>).<br/>
+<br/>
+Сесія реалізована класом <span class="code-text">SessionEntry</span> і міститься лише у програмі RibbonServer. Загалом клас сесії має такі поля як:
+
+<ul>
+  <li><span class="code-text">SESSION_HASH_ID <span class="green-text">[String]</span></span> 
+  - хеш-ідентифікатор сесії;</li>
+  <li><span class="code-text">SESSION_USER_NAME <span class="green-text">[String]</span></span> 
+  - ім’я користувача який створив цю сесію;</li>
+  <li><span class="code-text">COUNT <span class="green-text">[Integer]</span></span> 
+  - кількість використань сесії;</li>
+  <li><span class="code-text">IS_OBSELETE <span class="green-text">[Boolean]</span></span> 
+  - ознака того, чи застаріла ця сессія (застаріла сесія видаляється автоматично). 
+  <span class="strong">Див. розділ "Побудування системи та її запуск"</span>;</li>
+</ul>
+
 
 </div>
 </body>
