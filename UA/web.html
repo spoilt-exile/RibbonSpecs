@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- Created on 26 жовт 2013 20:21:41 -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>
+         Веб-інтерфейс для випуску повідомлень
+      </title>
+      <link REL="stylesheet" type="text/css" href="../spec.css">
+      <meta name="GENERATOR" content="Arachnophilia 5.5"/>
+      <meta name="FORMATTER" content="Arachnophilia 5.5"/>
+   </head>
+
+<body>
+<div align="center" class="m-header">Веб-інтерфейс для випуску повідомлень</div>
+<br/>
+<div class="main">
+<a href="_contents.html"><<<Назад</a>
+<br/>
+<br/>
+
+<span class="header">Загальная інформація</span><br/>
+<br/>
+
+Веб-інтерфейс створено для того, робітники агентства могли видалено випускати повідомлення у систему. 
+При цьому використовуються тіж самі логін та пароль як при роботі через звичайний клієнт. Скориставшись 
+веб-браузером, користувач може випустити повідомлення у систему і редагувати його до тих пір, поки його не 
+відредагує хтось інший чи поки повідомлення не буде перевипущено.<br/>
+<br/>
+
+Веб-інтерфейс реалізовано на базі веб-фреймворка Play! 2.10. Мова програмування - Java. 
+База даних - PostgreSQL (можлива заміна драйвера БД).
+<br/>
+<br/>
+
+<span class="header">Реалізація</span>
+<br/>
+<br/>
+
+Веб-інтерфейс самостійно реалізує частину клієнтського протоколу системи, але з деякими розбіжностями. 
+Для використання нативної системи контролю доступа до напрямків, веб-інтерфейс використовує так званий 
+"видалений" режим з’єднання. Таке з’єднання може виконувати команди у системі від імені будь-якого користувача. 
+При завантаженні веб-інтерфейс створює з’єднання з сервером системи, використовуючи ім’я користувача root 
+(можливо використовувати іншого користувача).<br/>
+<br/>
+
+Користувач заходить у систему за допомогою команди <span class="code-text">RIBBON_NCTL_REM_LOGIN:</span> замість 
+<span class="code-text">RIBBON_NCTL_LOGIN:</span>. Ця команда не змінює відомості з’єднання, а лише дає відповідь на 
+процедуру логіну.<br/>
+<br/>
+
+Увійшовши до системі користувач відправляє усі команди через команду обгортку <span class="code-text">RIBBON_NCTL_ACCESS_CONTEXT:</span>, 
+використовуючи свій логін як аргумент. Система тимчасово перемикає відомості з’єднання і дає відповідь <span class="code-text">PROCEED:</span>. 
+Після цього будь-яка наступна команда буде виконана з привілеями вказаного користувача. Після виконання команди, система відновлює 
+відомості з’єднання і очікує наступної команди.<br/>
+<br/>
+
+Веб-інтерфейс зроблено так, щоб користувач практично не працював зі з’єднанням самостійно. Усі необхідні дані веб-інтерфейс зберігає 
+окремо у базі даних.<br/>
+<br/>
+
+<span class="header">База даних</span><br/>
+<br/>
+
+Веб-інтерфейс зберігає практично усі поступаючі дані у своєї базі даних. Це зроблено з міркувань відмовостійкості. <br/>
+<br/>
+Список таблиць бази:
+<ul>
+  <li><span class="code-text">message_probe</span> - черга повідомлень;</li>
+  <li><span class="code-text">play_evaluations</span> - службова таблиця Play Framework;</li>
+  <li><span class="code-text">pseudo_directory_set</span> - список доступних псевдонапрямків для користувачів;</li>
+  <li><span class="code-text">server_config</span> - конфігурація сервера;</li>
+  <li><span class="code-text">session</span> - сесії користувачів;</li>
+</ul>
+
+Усі ці таблиці (окрім <span class="code-text">play_evaluations</span>) відповідають реальним класам моделей у сирцевому коді 
+веб-інтерфейсу. Для взаємодії з базою даних використовується фреймворк Ebean.<br/>
+<br/>
+
+Параметри таблиці <span class="code-text">message_probe</span>:
+<!--
+  <li><span class="code-text">[<span class="green-text"></span>]</span> - 
+  ;</li>
+--->
+<ul>
+  <li><span class="code-text">id[<span class="green-text">!varchar(255)</span>]</span> - 
+  внутрішній ідентифікатор;</li>
+  <li><span class="code-text">header[<span class="green-text">!varchar(500)</span>]</span> - 
+  заголовок повідомлення;</li>
+  <li><span class="code-text">date[<span class="green-text">!timestamp</span>]</span> - 
+  дати випуску;</li>
+  <li><span class="code-text">psdir[<span class="green-text">!varchar(100)</span>]</span> - 
+  псевдонапрямок випуску;</li>
+  <li><span class="code-text">tags[<span class="green-text">varchar(200)</span>]</span> - 
+  теги повідомлення;</li>
+  <li><span class="code-text">content[<span class="green-text">!varchar(4000000)</span>]</span> - 
+  зміст повідомлення;</li>
+  <li><span class="code-text">author[<span class="green-text">!varchar(200)</span>]</span> - 
+  автор повідомлення;</li>
+  <li><span class="code-text">ribbon_index[<span class="green-text">varchar(10)</span>]</span> - 
+  індекс у системі (необхідно для подальшого редагування);</li>
+  <li><span class="code-text">curr_status[<span class="green-text">integer</span>]</span> - 
+  статус повідомлення. Насправді реалізовано як перечислення (0-6);</li>
+</ul>
+
+Параметри таблиці <span class="code-text">pseudo_directory_set</span>:
+<ul>
+  <li><span class="code-text">id[<span class="green-text">!varchar(255)</span>]</span> - 
+  внутрішній ідентифікатор;</li>
+  <li><span class="code-text">name[<span class="green-text">!varchar(255)</span>]</span> - 
+  ім’я користувача;</li>
+  <li><span class="code-text">dirs[<span class="green-text">!varchar(20000)</span>]</span> - 
+  CSV-рядки напрямків, яки може використовувати користувач;</li>
+</ul>
+
+Параметри таблиці <span class="code-text">server_config</span>:
+<ul>
+  <li><span class="code-text">id[<span class="green-text">!varchar(255)</span>]</span> - 
+  внутрішній ідентифікатор;</li>
+  <li><span class="code-text">name[<span class="green-text">varchar(255)</span>]</span> - 
+  назва конфігурації;</li>
+  <li><span class="code-text">address[<span class="green-text">varchar(255)</span>]</span> - 
+  адреса сервера;</li>
+  <li><span class="code-text">port[<span class="green-text">integer</span>]</span> - 
+  мережевий порт сервера;</li>
+  <li><span class="code-text">ruser[<span class="green-text">varchar(255)</span>]</span> - 
+  користувач-власник з’єднання;</li>
+  <li><span class="code-text">hpass[<span class="green-text">varchar(255)</span>]</span> - 
+  хеш пароля користувача;</li>
+  <li><span class="code-text">curr_status[<span class="green-text">integer</span>]</span> - 
+  статус з’єднання. Насправді реалізована як перечислення (0-2);</li>
+</ul>
+
+Параметри таблиці <span class="code-text">session</span>:
+<ul>
+  <li><span class="code-text">id[<span class="green-text">!varchar(255)</span>]</span> - 
+  внутрішній ідентифікатор;</li>
+  <li><span class="code-text">username[<span class="green-text">!varchar(200)</span>]</span> - 
+  ім’я користувача;</li>
+  <li><span class="code-text">description[<span class="green-text">!varchar(400)</span>]</span> - 
+  опис користувача з системи;</li>
+  <li><span class="code-text">is_admin[<span class="green-text">!boolean</span>]</span> - 
+  вмикач який показує чи є користувач адміністратором системи (належить до групи ADM);</li>
+  <li><span class="code-text">curr_status[<span class="green-text">!integer</span>]</span> - 
+  статус з’єднання. Насправді реалізована як перечислення (0-1);</li>
+  <li><span class="code-text">first_login[<span class="green-text">!timestamp</span>]</span> - 
+  час першого логіна у систему через веб-інтерфейс;</li>
+  <li><span class="code-text">last_login[<span class="green-text">!timestamp</span>]</span> - 
+  час останнього логіна у систему через веб-інтерфейс;</li>
+</ul>
+
+<span class="header">Відмовостійкість</span><br/>
+<br/>
+
+Веб-інтерфейс реалізує практично усі потрібні для самостійної роботи елементи окрім системи аутентифікації 
+користувача. Якщо сервер повідомлень не працює і з’єднатись до нього неможливо, веб-інтерфейс зможе приймати 
+повідомлення від вже увішедших користувачів (які мають кукіс у браузері),
+
+<br/>
+<br/>
+<span class="header">Встановлення і початкова конфігурація</span>
+<br/>
+
+<ol>
+  <li>Переконайтесь, що задовільнені усі залежності веб-інтерфейсу;</li>
+  <li>Завантажте останю версію програми веб-інтерфейсу і разпакуйте її до окремої теки;</li>
+  <li>Підготуйте веб-інтерфейс згідно з руководством по встановленню програм 
+  <a href="http://www.playframework.com/documentation/2.1.x/ProductionConfiguration">Play Framework 2.10</a> (див. для вашої версії);</li>
+  <li>Якщо ви обрали базу даних відмінну від PostgreSQL 9.3, то краще завантижити сирецеві коди і замінити файл драйверу у теці 
+  <span class="green-text">lib/</span> і  адрес бази даних у файлі конфігурації <span class="green-text">conf/application.conf</span>. 
+  Після змін, запустіть команду <span class="code-text">play dist</span> для побудування нового пакету;</li>
+  <li>Запустіть веб-інтерфейс за допомогою скрипту <span class="green-text">start</span>;</li>
+</ol>
+
+</div>
+</body>
+</html>

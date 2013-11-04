@@ -4,18 +4,20 @@ Specs pages CSS main file.
 
 /** Body style override **/
 body {
-  background-color: #cbcbcb;
+  background-color: #ffffff;
   margin: 12pt;
 }
 
 /** Main header style class **/
 .m-header{
-  text-align: center;
+  color: #ffffff;
+  border: 1px solid #e51e1e;
+  border-radius: 9px;
+  padding: 5px 5px 5px;
+  background-color: #2d69aa;
+ 	font-size: 22pt;
 	font-weight: bold;
-	font-size: 22pt;
-	font-family: "PT Sans", "Liberation Sans", "Tahoma", sans-serif;
-	background-color: #5990d9;
- 	color: #ffffff;
+  font-family: "PT Sans", "Liberation Sans", "Tahoma", sans-serif;
 }
 
 /** Ordinary header style class **/
@@ -74,7 +76,7 @@ body {
 	font-size: 11pt;
 	font-family: monospace;
 	font-weight: bold;
-	background-color: #a4a4a4;
+  background-color: #b8c5d3;
 }
 
 /** Code in text **/
