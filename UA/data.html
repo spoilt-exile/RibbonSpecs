@@ -214,7 +214,7 @@
 Поля класу <span class="code-text">MessageEntry</span>:
 <ul>
   <li><span class="code-text">ORIG_INDEX <span class="green-text">[String]</span></span> - 
-  індекс повідомлення-пращура.</li>
+  індекс повідомлення-пращура (якщо повідомлення оригінальне, то вказує на <span class="green-text">-1</span>).</li>
   <li><span class="code-text">INDEX <span class="green-text">[String]</span></span> - 
   індекс цього повідомлення.</li>
   <li><span class="code-text">DIRS <span class="green-text">[Array:String]</span></span> - 
@@ -224,7 +224,7 @@
   <li><span class="code-text">DATE <span class="green-text">[String]</span></span> - 
   дата та час випуску.</li>
   <li><span class="code-text">ORIG_AUTHOR <span class="green-text">[String]</span></span> - 
-  ім'я автора повідомлення-пращура.</li>
+  ім'я автора повідомлення-пращура (якщо оригінальне, то вказує на <span class="code-text">AUTHOR</span>, див. нижче).</li>
   <li><span class="code-text">AUTHOR <span class="green-text">[String]</span></span> - 
   ім'я автора цього повідомлення.</li>
   <li><span class="code-text">TAGS <span class="green-text">[Array:String]</span></span> - 
@@ -247,7 +247,7 @@
 Приклад повідомлення у форматі CSV:<br/>
 
 <pre class="code-frame">
-0000000002,-1,[СИСТЕМА.ТЕСТ,СИСТЕМА.Розробка],UA,{Знову працює!},25.05.2012 10:00,{},{Білобров М.М.},[система,розробка,ІТУ],{}
+0000000009,-1,[Укрінформ.Випуск],UA,{Тестове повідомлення},16:12:30 25.10.2013,{master},{master},[система,тест,експорт],{}
 </pre>
 
 <br/>
