@@ -72,15 +72,15 @@
 на переписані методи модулю.<br/>
 
 <br/>
-Загальні параметри схеми імпорту:<br/>
+Загальні параметри схеми імпорту (<span class="code-text"><span class="red-text">[!]</span></span> - обов’язковий параметр):<br/>
 <ul>
-  <li><span class="code-text">import_type <span class="green-text">[Рядок]</span></span> - 
+  <li><span class="code-text">import_type <span class="green-text">[Рядок]</span> <span class="red-text">[!]</span></span> - 
   тип необхідного модулю для роботи цієї схеми;</li>
-  <li><span class="code-text">import_name <span class="green-text">[Рядок]</span></span> - 
+  <li><span class="code-text">import_name <span class="green-text">[Рядок]</span> <span class="red-text">[!]</span></span> - 
   ім’я схеми під яким вона буде діяти у системі;</li>
   <li><span class="code-text">import_print <span class="green-text">[Хеш]</span></span> - 
   системний ідентифікатор схеми у системі (автоматично створюється разом зі схемою);</li>
-  <li><span class="code-text">import_timeout <span class="green-text">[Ціле]</span></span> - 
+  <li><span class="code-text">import_timeout <span class="green-text">[Ціле]</span> <span class="red-text">[!]</span></span> - 
   тривалість перерви між перевірками на предмет нових даних (у хвилинах);</li>
   <li><span class="code-text">opt_log <span class="green-text">[Булеве]</span></span> - 
   заносити запис у системний журнал при вдалому випуску;</li>
@@ -127,15 +127,15 @@ opt_log=1
 у теці <span class="green-text">export</span>, що знаходиться у базі повідомлень.<br/>
 <br/>
 
-Загальні параметри схеми експорту:
+Загальні параметри схеми експорту (<span class="code-text"><span class="red-text">[!]</span></span> - обов’язковий параметр):
 <ul>
-  <li><span class="code-text">export_type <span class="green-text">[Рядок]</span></span> - 
+  <li><span class="code-text">export_type <span class="green-text">[Рядок]</span> <span class="red-text">[!]</span></span> - 
   тип необхідного модулю для роботи цієї схеми;</li>
-  <li><span class="code-text">export_name <span class="green-text">[Рядок]</span></span> - 
+  <li><span class="code-text">export_name <span class="green-text">[Рядок]</span> <span class="red-text">[!]</span></span> - 
   ім’я схеми під яким вона буде діяти у системі;</li>
   <li><span class="code-text">export_print <span class="green-text">[Хеш]</span></span> - 
   системний ідентифікатор схеми у системі (автоматично створюється разом зі схемою);</li>
-  <li><span class="code-text">export_timeout <span class="green-text">[Ціле]</span></span> - 
+  <li><span class="code-text">export_timeout <span class="green-text">[Ціле]</span> <span class="red-text">[!]</span></span> - 
   тривалість перерви перед самим процесом експорту;</li>
   <li><span class="code-text">export_template <span class="green-text">[Рядок]</span></span> - 
   шлях до файлу шаблону за яким формується текст повідомлення при експорті 
@@ -151,7 +151,7 @@ export_type=PLAIN
 export_name=HTML
 export_print=4f0d644c3c95e35bf033bd94b1168d7e
 export_timeout=1
-export_template=/home/spoilt/РАБОТА [УКРИНФОРМ]/ribbon_base/export/HTML.template
+export_template=HTML.template
 ...
 opt_log=1
 </pre>
