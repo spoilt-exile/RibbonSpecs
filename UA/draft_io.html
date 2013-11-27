@@ -16,10 +16,13 @@
 
 <body>
 <div class="main">
-<div align="center" class="m-header">Імпорт та експорт повідомлень</div>
+<div class="m-header">Імпорт та експорт повідомлень</div>
 <br/>
 <a href="_contents.html"><<<Назад</a>
-<br/>
+<br/><br/>
+
+<span class="strong">Версія API:</span> <span class="select">1</span><br/>
+
 <br/>
 <span class="header">Реалізація імпорту/експорту у системі</span><br/>
 <br/>
@@ -34,7 +37,6 @@
 Кожен модуль є окремим виконавчим файлом jar, який виконує одну окрему операцію імпорту чи експорту. Взагалі 
 нічого не перешкоджає створити один модуль який містить багато операцій імпорту і експорту одночасно.<br/>
 <br/>
-
 
 <span class="header">Імпорт повідомлень до системи</span><br/>
 <br/>
@@ -55,12 +57,21 @@
 Ці методи не обов’язкові для реалізація, але дуже бажані.<br/>
 <br/>
 
-Клас модулю повинен, окрім успадкування класу <span class="code-text">Import.Importer</span>, містити змінні типу 
-<span class="code-text"><span class="green-text">String</span></span> 
-<span class="code-text">type</span> і <span class="code-text">propertyType</span>, які мають бути 
-статичними та публічними одночасно (<span class="code-text">public static</span>). Перша змінна 
-дозволяє визначити тип модулю - з яким протоколом він взаємодіє. Друга змінна - це ідентифікатор 
-системної ознаки, якою мають бути помічені усі повідомлення оброблені цим модулем.<br/>
+Клас модулю повинен, окрім успадкування класу <span class="code-text">Import.Importer</span>, містити 
+анотацію <span class="code-text">Utils.RibbonIOModule</span>, яка повідомляє системі, що це є клас модуля. 
+Дана анотація містить у собі три параметра: <span class="code-text">type</span> (тип модулю), 
+<span class="code-text">property</span> (ідентифікатор для системних ознак) та 
+api_<span class="code-text">version</span> (версія API яка потребуэться для запуску модуля).<br/>
+<br/>
+
+Приклад використання анотації:
+<pre class="code-frame">
+<span class="red-text">@RibbonIOModule(type="MAIL", property="EXPORT_MAIL", api_version=1)</span>
+public class Mail extends Export.Exporter {
+</pre>
+
+Слід зауважити, що система перевіряє при завантаженні версію API і намагається не завантажувати модулі 
+з більш новим API ніж у системі.<br/>
 <br/>
 
 Модуль компілюється у окремий виконавчий файл jar і не містить жодних налаштувань. Сервер створює екземпляри 
@@ -114,8 +125,8 @@ opt_log=1
 <br/>
 
 Модуль експорту успадковує клас <span class="code-text">Export.Exporter</span> з бібліотеки libRibbonIO. Аналогічно до імпорту цей клас містить метод 
-<span class="code-text">doExport()</span>, який виконує експорт повідомлення з системи. Статичні змінні <span class="code-text">type</span> і 
-<span class="code-text">propertyType</span> також обов’язкові для модуля.<br/>
+<span class="code-text">doExport()</span>, який виконує експорт повідомлення з системи. 
+Анотація <span class="code-text">RibbonIOModule</span> також є обов’язковою.<br/>
 <br/>
 
 Також є методи <span class="code-text">tryRecover()</span> і <span class="code-text">resetState()</span>, які створені для виправлення роботи 
