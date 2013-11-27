@@ -60,7 +60,7 @@ SMTP-сервером за допомогою SSL, проходити аутен
   адреса пошти отримувача;</li>
   <li><span class="code-text">mail_rcp_list [<span class="green-text">Рядок</span>]</span> - 
   шлях до файлу списку отримувачів. Модуль буде намагатись відправляти на адресу у кожному рядку файлу. Замінює значення 
-  налаштування <span class="code-text">mail_to</span>. <span class="red-text">Не реалізовано.</span>;</li>
+  налаштування <span class="code-text">mail_to</span> (див. розділ "Список отримувачів");</li>
   <li><span class="code-text">mail_from [<span class="green-text">Рядок</span>] <span class="red-text">[!]</span></span> - 
   зворотня адреса. 
   <span class="code-text"><span class="red-text">УВАГА! Більшість поштових серверів налаштована відкидати листи, 
@@ -68,10 +68,7 @@ SMTP-сервером за допомогою SSL, проходити аутен
   <li><span class="code-text">mail_subject [<span class="green-text">Рядок</span>]</span> - 
   тема листа (за замовчуванням заголовок експортованого повідомлення);</li>
   <li><span class="code-text">mail_subject_allow_template [<span class="green-text">Булеве</span>]</span> - 
-  вмикає обробку налаштування <span class="code-text">mail_subject</span> як шаблону і дозволяє обробляти з нього ключові слова. 
-  <span class="red-text">Не реалізовано.</span>;</li>
-  <li><span class="code-text">mail_charset [<span class="green-text">Рядок</span>]</span> - 
-  відправляти листи з вказаною кодовою сторінкою (за замовчуванням UTF-8). <span class="red-text">Не реалізовано.</span>;</li>
+  вмикає обробку налаштування <span class="code-text">mail_subject</span> як шаблону і дозволяє обробляти з нього ключові слова;</li>
 </ul>
 
 
@@ -87,8 +84,27 @@ mail_smtp_pass=mypass
 mail_smtp_con_port=465
 mail_smtp_con_security=ssl
 mail_to=some@example.com
+mail_rcp_list=mail.rcplist
 mail_from=author@example.com
+mail_subject=НОВОСТИ: $HEADER 
+mail_subject_allow_template=1
 </pre>
+<br/>
+
+<span class="header">Список отримувачів</span><br/>
+<br/>
+
+Це зовнішній текстовий файл, який цей модуль використовує як список розсилки. Кожна адреса отримувача 
+займає один рядок файлу. Кожен запис може містити не тільки саму адресу (наприклад test@example.com), 
+але й ім’я отримувача за форматом електроної пошти: Director &lt;director@example.com&gt;<br/>
+<br/>
+
+Слід зазначити, що кожен запис зі списку розсилки обробляється окремо, тому отримувач не матиме доступ 
+до списку адрес.<br/>
+<br/>
+
+<span class="red-text">Модуль реалізує максимально простий список розсилки, який не рекомендовано 
+використовувати для комерційного разповсюдження інформації.</span><br/>
 <br/>
 
 
