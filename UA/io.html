@@ -19,7 +19,10 @@
 <div align="center" class="m-header">Імпорт та експорт повідомлень</div>
 <br/>
 <a href="_contents.html"><<<Назад</a>
-<br/>
+<br/><br/>
+
+<span class="strong">Версія API:</span> <span class="select">1</span><br/>
+
 <br/>
 <span class="header">Реалізація імпорту/експорту у системі</span><br/>
 <br/>
@@ -34,7 +37,6 @@
 Кожен модуль є окремим виконавчим файлом jar, який виконує одну окрему операцію імпорту чи експорту. Взагалі 
 нічого не перешкоджає створити один модуль який містить багато операцій імпорту і експорту одночасно.<br/>
 <br/>
-
 
 <span class="header">Імпорт повідомлень до системи</span><br/>
 <br/>
@@ -55,12 +57,21 @@
 Ці методи не обов’язкові для реалізація, але дуже бажані.<br/>
 <br/>
 
-Клас модулю повинен, окрім успадкування класу <span class="code-text">Import.Importer</span>, містити змінні типу 
-<span class="code-text"><span class="green-text">String</span></span> 
-<span class="code-text">type</span> і <span class="code-text">propertyType</span>, які мають бути 
-статичними та публічними одночасно (<span class="code-text">public static</span>). Перша змінна 
-дозволяє визначити тип модулю - з яким протоколом він взаємодіє. Друга змінна - це ідентифікатор 
-системної ознаки, якою мають бути помічені усі повідомлення оброблені цим модулем.<br/>
+Клас модулю повинен, окрім успадкування класу <span class="code-text">Import.Importer</span>, містити 
+анотацію <span class="code-text">Utils.RibbonIOModule</span>, яка повідомляє системі, що це є клас модуля. 
+Дана анотація містить у собі три параметра: <span class="code-text">type</span> (тип модулю), 
+<span class="code-text">property</span> (ідентифікатор для системних ознак) та 
+api_<span class="code-text">version</span> (версія API яка потребуэться для запуску модуля).<br/>
+<br/>
+
+Приклад використання анотації:
+<pre class="code-frame">
+<span class="red-text">@RibbonIOModule(type="MAIL", property="EXPORT_MAIL", api_version=1)</span>
+public class Mail extends Export.Exporter {
+</pre>
+
+Слід зауважити, що система перевіряє при завантаженні версію API і намагається не завантажувати модулі 
+з більш новим API ніж у системі.<br/>
 <br/>
 
 Модуль компілюється у окремий виконавчий файл jar і не містить жодних налаштувань. Сервер створює екземпляри 
@@ -114,8 +125,8 @@ opt_log=1
 <br/>
 
 Модуль експорту успадковує клас <span class="code-text">Export.Exporter</span> з бібліотеки libRibbonIO. Аналогічно до імпорту цей клас містить метод 
-<span class="code-text">doExport()</span>, який виконує експорт повідомлення з системи. Статичні змінні <span class="code-text">type</span> і 
-<span class="code-text">propertyType</span> також обов’язкові для модуля.<br/>
+<span class="code-text">doExport()</span>, який виконує експорт повідомлення з системи. 
+Анотація <span class="code-text">RibbonIOModule</span> також є обов’язковою.<br/>
 <br/>
 
 Також є методи <span class="code-text">tryRecover()</span> і <span class="code-text">resetState()</span>, які створені для виправлення роботи 
@@ -135,13 +146,18 @@ opt_log=1
   ім’я схеми під яким вона буде діяти у системі;</li>
   <li><span class="code-text">export_print <span class="green-text">[Хеш]</span></span> - 
   системний ідентифікатор схеми у системі (автоматично створюється разом зі схемою);</li>
-  <li><span class="code-text">export_timeout <span class="green-text">[Ціле]</span> <span class="red-text">[!]</span></span> - 
-  тривалість перерви перед самим процесом експорту;</li>
   <li><span class="code-text">export_template <span class="green-text">[Рядок]</span></span> - 
   шлях до файлу шаблону за яким формується текст повідомлення при експорті 
   (<span class="select">див. нижче</span>);</li>
   <li><span class="code-text">opt_log <span class="green-text">[Булеве]</span></span> - 
   заносити запис у системний журнал при вдалому випуску;</li>
+  <li><span class="code-text">opt_charset <span class="green-text">[Рядок]</span></span> - 
+  встановлює кодову сторінку для експорту. Зауваження: модуль може ігнорувати цей параметр;</li>
+  <li><span class="code-text">opt_em_action <span class="green-text">[Перечислення]</span></span> - 
+  встановлює поведінку системи у разі отримання помилки експорту. Значення: <span class="code-text">PLACE_ERRQ_DIRTY </span>
+  (додає повідомлення у аварійну чергу і встановлює "брудний режим"), <span class="code-text">DROP_WARN </span>
+  (викинути повідомлення з експорту і вислати помилку) і <span class="code-text">DROP_SILENT</span> (тихо викинути). 
+  За замовчуванням використовується значення <span class="code-text">PLACE_ERRQ_DIRTY</span>;</li>
 </ul>
 
 Приклад схеми без специфічних параметрів:<br/>
@@ -150,9 +166,10 @@ opt_log=1
 export_type=PLAIN
 export_name=HTML
 export_print=4f0d644c3c95e35bf033bd94b1168d7e
-export_timeout=1
 export_template=HTML.template
 ...
+opt_charset=Cp1251
+opt_em_action=DROP_SILENT
 opt_log=1
 </pre>
 
@@ -164,18 +181,13 @@ opt_log=1
 напрямку вказано діячу схему експорту, то сервер оформляє підписку на цю схему.<br/>
 <br/>
 Під час випуску повідомлення сервер перевіряє за листом підписок, чи потрібно поточне повідомлення експортувати з системи. 
-Якщо сервер знаходить схеми експорту за напрямками повідомлення, то він ініціює процес експорту. На кожну отриману схему 
+Якщо сервер знаходить схеми експорту за напрямками повідомлення, то він ініціює процес експорту. 
+При цьому повідомлення, які позначені системною ознакою <span class="code-text">PROCESSING_FORBIDDEN</span>, 
+ігноруються системою. На кожну отриману схему 
 сервер створює новий екземпляр класу модулю і передає йому повідомлення. Для мінімізації операцій з індексами бази 
 повідомлень сервер кожний схемі експорту передає об’єкт "гачка" (екземпляр <span class="code-text">Export.ReleaseSwitch</span>) 
 який оновить системні ознаки повідомлення у базі тільки коли буде завершено експорт повідомлення за усіма схемами. Після 
 експорту і оновлення даних, екземпляри усіх заподіяних об’єктив знищуються.<br/>
-<br/>
-
-<span class="red-text">
-Поточна реалізація бібліотеки libRibbonIO не підтримує обробку помилок експорту і відновлення після помилки. Також 
-не реалізована затримка перед експортом і заборона експорту повідомлення якщо воно помічене ознакою 
-<span class="code-text">PROCESSING_FORBIDDEN</span>.</span>
-<br/>
 <br/>
 
 <span class="header">Формат повідомлення при експорті</span><br/>
@@ -276,7 +288,44 @@ opt_log=1
 
 
 Автор <span class="red-text">Непочатов С.І.  17:08:44 07.08.2013 </span>
-</pre>
+</pre><br/>
+
+
+<span class="header">Cистемна обгортка</span><br/>
+<br/>
+Для комунікації з сервером системи модулі вводу/виводу повіні використовувати так звану системну обгортку. Ця обгортка 
+містить методи, які може використовувати модуль для зв’язку з системою.<br/>
+<br/>
+Обгортка реалізована як обстрактний клас з абстрактними методами. Сервер на своєї стороні реалізує цей клас з усіма методами. 
+Потім екземпляр цього класу реєструється у підсистемі вводу/виводу як обгортка по замовчуванню. Після цього усі модулі можуть 
+використовувати ці методи прямим викликом.
+
+<br/>
+<br/>
+Далі іде список методів:<br/>
+
+<ul>
+  <li><span class="code-text">public void addMessage(String schemeName, String typeName, MessageClasses.Message givenMessage)</span>
+   - додати готове повідомлення до системи. Вимогає надати назву схеми, тип модулю і повідомлення. 
+   Використовується для імпорту до системи.</li>
+   <li><span class="code-text">public void enableDirtyState(String moduleType, String moduleScheme, String modulePrint)</span> 
+   - увімкнути "брудний" режим системи після збою модулю. Про цьому модуль повинен надати свій тип, назву схеми і свій ідентифікатор. 
+   Модулі експорту для коректної ідентифікації повіні надавати ідентифікатор спарений з індексом повідомлення.</li>
+   <li><span class="code-text">public void disableDirtyState(String moduleType, String moduleScheme, String modulePrint)</span> 
+   - вимнути "брудний" режим системи після відновлення роботи модуля. Якщо ще якісь модулі вмикали цей режим, то повне відновлення 
+   роботи системи може не статися. Кожний модуль, який вмикав "брудний" режим, повинен самостійного його вимкнути.</li>
+   <li><span class="code-text">public String getDate()</span> 
+   - повертає рядок поточної дати за форматом "ГГ:ХХ:СС ДД.ММ.РРРР".</li>
+   <li><span class="code-text">public String getProperty(String key)</span> 
+   - метод для отримання конфігурації системи з головного файлу конфігурації. Повертає значення за ключьом.</li>
+   <li><span class="code-text">public void postException(String desc, Throwable ex)</span> 
+   - випустити виключення як повідомлення до системи. Вимогає надати невеликий опис події і сам об’єкт виключення.</li>
+   <li><span class="code-text">public void registerPropertyName(String givenName)</span> 
+   - зареєструвати тип озники у системі. Вимагає вказати тип ознаки.</li>
+   <li><span class="code-text">public void updateIndex(String givenIndex)</span> 
+   - оновити індекс повідомлення у системі і сповістити усіх клієнтів. Вимагає наадати індекс повідомлення. 
+   Використовується для оновлення повідомлення після експорту.</li>
+</ul>
 
 </div>
 </body>
