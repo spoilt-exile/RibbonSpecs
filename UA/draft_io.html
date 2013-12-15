@@ -16,7 +16,7 @@
 
 <body>
 <div class="main">
-<div class="m-header">Імпорт та експорт повідомлень</div>
+<div align="center" class="m-header">Імпорт та експорт повідомлень</div>
 <br/>
 <a href="_contents.html"><<<Назад</a>
 <br/><br/>
@@ -146,13 +146,18 @@ opt_log=1
   ім’я схеми під яким вона буде діяти у системі;</li>
   <li><span class="code-text">export_print <span class="green-text">[Хеш]</span></span> - 
   системний ідентифікатор схеми у системі (автоматично створюється разом зі схемою);</li>
-  <li><span class="code-text">export_timeout <span class="green-text">[Ціле]</span> <span class="red-text">[!]</span></span> - 
-  тривалість перерви перед самим процесом експорту;</li>
   <li><span class="code-text">export_template <span class="green-text">[Рядок]</span></span> - 
   шлях до файлу шаблону за яким формується текст повідомлення при експорті 
   (<span class="select">див. нижче</span>);</li>
   <li><span class="code-text">opt_log <span class="green-text">[Булеве]</span></span> - 
   заносити запис у системний журнал при вдалому випуску;</li>
+  <li><span class="code-text">opt_charset <span class="green-text">[Рядок]</span></span> - 
+  встановлює кодову сторінку для експорту. Зауваження: модуль може ігнорувати цей параметр;</li>
+  <li><span class="code-text">opt_em_action <span class="green-text">[Перечислення]</span></span> - 
+  встановлює поведінку системи у разі отримання помилки експорту. Значення: <span class="code-text">PLACE_ERRQ_DIRTY </span>
+  (додає повідомлення у аварійну чергу і встановлює "брудний режим"), <span class="code-text">DROP_WARN </span>
+  (викинути повідомлення з експорту і вислати помилку) і <span class="code-text">DROP_SILENT</span> (тихо викинути). 
+  За замовчуванням використовується значення <span class="code-text">PLACE_ERRQ_DIRTY</span>;</li>
 </ul>
 
 Приклад схеми без специфічних параметрів:<br/>
@@ -161,9 +166,10 @@ opt_log=1
 export_type=PLAIN
 export_name=HTML
 export_print=4f0d644c3c95e35bf033bd94b1168d7e
-export_timeout=1
 export_template=HTML.template
 ...
+opt_charset=Cp1251
+opt_em_action=DROP_SILENT
 opt_log=1
 </pre>
 
