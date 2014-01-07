@@ -122,17 +122,17 @@
 <ul>
   <li><span class="code-text">id[<span class="green-text">!varchar(255)</span>]</span> - 
   внутрішній ідентифікатор;</li>
-  <li><span class="code-text">name[<span class="green-text">varchar(255)</span>]</span> - 
+  <li><span class="code-text">name[<span class="green-text">!varchar(255)</span>]</span> - 
   назва конфігурації;</li>
-  <li><span class="code-text">address[<span class="green-text">varchar(255)</span>]</span> - 
+  <li><span class="code-text">address[<span class="green-text">!varchar(255)</span>]</span> - 
   адреса сервера;</li>
   <li><span class="code-text">port[<span class="green-text">integer</span>]</span> - 
-  мережевий порт сервера;</li>
-  <li><span class="code-text">ruser[<span class="green-text">varchar(255)</span>]</span> - 
+  мережевий порт сервера (за замовчуванням дорівнює 3003);</li>
+  <li><span class="code-text">ruser[<span class="green-text">!varchar(255)</span>]</span> - 
   користувач-власник з’єднання;</li>
-  <li><span class="code-text">hpass[<span class="green-text">varchar(255)</span>]</span> - 
+  <li><span class="code-text">hpass[<span class="green-text">!varchar(255)</span>]</span> - 
   хеш пароля користувача;</li>
-  <li><span class="code-text">curr_status[<span class="green-text">integer</span>]</span> - 
+  <li><span class="code-text">curr_status[<span class="green-text">!integer</span>]</span> - 
   статус з’єднання. Насправді реалізована як перечислення (0-2);</li>
 </ul>
 
