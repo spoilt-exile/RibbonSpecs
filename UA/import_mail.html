@@ -51,11 +51,11 @@ POP3-сервером за допомогою SSL, проходити аутен
 <ul>
   <li><span class="code-text">mail_pop3_address [<span class="green-text">Рядок</span>] <span class="red-text">[!]</span></span> - 
   адреса поштового сервера;</li>
-  <li><span class="code-text">mail_pop3_con_port [<span class="green-text">Ціле</span>]</span> - 
+  <li><span class="code-text">mail_pop3_port [<span class="green-text">Ціле</span>]</span> - 
   порт з’єднання з сервером (за замовчуванням 110 порт);</li>
-  <li><span class="code-text">mail_pop3_con_security [<span class="green-text">Перечислення</span>]</span> - 
-  метод захисту з’єднання (шифрування). Може бути <span class="code-text">none</span> чи <span class="code-text">ssl</span>.
-  За замовчуванням <span class="code-text">none</span>;</li>
+  <li><span class="code-text">mail_pop3_security [<span class="green-text">Перечислення</span>]</span> - 
+  метод захисту з’єднання (шифрування). Може бути <span class="code-text">NONE</span> чи <span class="code-text">SSL</span>.
+  За замовчуванням <span class="code-text">NONE</span>;</li>
   <li><span class="code-text">mail_pop3_login [<span class="green-text">Рядок</span>]</span> - 
   логін користувача для входу на поштовий сервер;</li>
   <li><span class="code-text">mail_pop3_password [<span class="green-text">Рядок</span>]</span> - 
@@ -97,11 +97,11 @@ import_print=e4f0d644c3c95e35bf033bd91234b117
 mail_pop3_address=pop.example.com
 mail_pop3_login=robot
 mail_pop3_pass=mypass
-mail_pop3_con_port=995
-mail_pop3_con_security=ssl
+mail_pop3_port=995
+mail_pop3_security=SSL
 mail_read_from=author@example.com
 mail_read_whitelist=mailbox-whitelist.index
-mail_read_whitelist=EXTENDED
+mail_read_whitelist_format=EXTENDED
 mail_post_action=DELETE
 mail_read_format=1
 mail_read_fallback_dir=Система.Тест
