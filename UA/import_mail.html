@@ -60,6 +60,8 @@ POP3-сервером за допомогою SSL, проходити аутен
   логін користувача для входу на поштовий сервер;</li>
   <li><span class="code-text">mail_pop3_password [<span class="green-text">Рядок</span>]</span> - 
   пароль користувача для входу на поштовий сервер;</li>
+  <li><span class="code-text">mail_pop3_debug [<span class="green-text">Булеве</span>]</span> - 
+  виводити відладочну інформацію з’єднання з поштовим сервером, ця інформація буде виводитись лише у термінал;</li>
   <li><span class="code-text">mail_read_from [<span class="green-text">Рядок</span>]</span> - 
   поштова адреса листи з якої може читати модуль;</li>
  	<li><span class="code-text">mail_read_whitelist [<span class="green-text">Рядок</span>]</span> - 
@@ -89,6 +91,10 @@ POP3-сервером за допомогою SSL, проходити аутен
 підтримує цей формат (підписки стороніх сервісів і т.п.).
 <br/>
 <br/>
+<span class="code-text"><span class="red-text">УВАГА!</span></span> Для використання опції відсилання листа-відповіді конфігурація має містити 
+додаткові рядки з конфігурацієї SMTP відповідно як у модулі експорту для пошти.
+<br/>
+<br/>
 Приклад конфігурації:
 <pre class="code-frame">
 import_type=MAIL
@@ -99,6 +105,7 @@ mail_pop3_login=robot
 mail_pop3_pass=mypass
 mail_pop3_port=995
 mail_pop3_security=SSL
+mail_pop3_debug=0
 mail_read_from=author@example.com
 mail_read_whitelist=mailbox-whitelist.index
 mail_read_whitelist_format=EXTENDED
@@ -106,6 +113,14 @@ mail_post_action=DELETE
 mail_read_format=1
 mail_read_fallback_dir=Система.Тест
 mail_send_report=1
+...
+<span class="red-text">mail_smtp_address=smtp.example.com
+mail_smtp_login=author
+mail_smtp_pass=mypass
+mail_smtp_con_port=465
+mail_smtp_con_security=ssl
+mail_from=author@example.com</span>
+...
 opt_log=1
 </pre>
 <br/>
